@@ -285,9 +285,12 @@
       <button class="btn btn-primary btn-sm btn-block" data-route="#/wallet" id="sb-cta">👑 Go Pro</button>
     </div>
 
-    <div class="me" id="me-row" data-route="#/wallet">
-      <div class="av" id="me-av">G</div>
-      <div style="flex:1;min-width:0"><div class="nm" id="me-nm">Guest</div><div class="tier" id="me-tier">Not signed in</div></div>
+    <div class="me" id="me-row">
+      <div class="av" id="me-av" data-route="#/wallet">G</div>
+      <div style="flex:1;min-width:0;cursor:pointer" data-route="#/wallet"><div class="nm" id="me-nm">Guest</div><div class="tier" id="me-tier">Not signed in</div></div>
+      <button id="me-signout" title="Sign out" onclick="signOut()" style="display:none;background:none;border:none;cursor:pointer;color:var(--tx2);padding:6px;border-radius:8px" onmouseover="this.style.background='var(--surf2,#1E1C28)'" onmouseout="this.style.background='none'">
+        <svg class="ico" viewBox="0 0 24 24" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+      </button>
     </div>
   </aside>
 
@@ -422,9 +425,9 @@ function syncChrome(){
   $("#sb-plan").textContent = isPro() ? "👑 Genius Pro" : "Free · alpha";
   const cta=$("#sb-cta");
   if(isPro()){ cta.textContent="👑 Pro active"; cta.disabled=true; } else { cta.textContent="👑 Go Pro"; cta.disabled=false; }
-  const av=$("#me-av"), nm=$("#me-nm"), tier=$("#me-tier");
-  if(S.user){ av.textContent=S.user.name[0].toUpperCase(); nm.textContent=S.user.name; tier.textContent=isPro()?"Genius Pro":S.user.email; }
-  else{ av.textContent="G"; nm.textContent="Guest"; tier.textContent="Sign in to create"; }
+  const av=$("#me-av"), nm=$("#me-nm"), tier=$("#me-tier"), so=$("#me-signout");
+  if(S.user){ av.textContent=S.user.name[0].toUpperCase(); nm.textContent=S.user.name; tier.textContent=isPro()?"Genius Pro":S.user.email; if(so) so.style.display=""; }
+  else{ av.textContent="G"; nm.textContent="Guest"; tier.textContent="Sign in to create"; if(so) so.style.display="none"; }
   const cr=location.hash||"#/home";
   document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("active", a.dataset.route===cr || (cr.startsWith("#/app/")&&a.dataset.route==="#/create")));
 }
@@ -838,11 +841,38 @@ function showOutput(out){
 /* ---------- GALLERY ---------- */
 function viewGallery(v){
   if(!S.user){ return emptyState(v,"Gallery","Sign in to see your creations","Your generated images and videos are saved here.",true); }
+  // In real-backend mode, hydrate from GET /api/v1/web/jobs (source of truth across devices).
+  // Render whatever we have locally first, then refresh from the API.
+  if(USE_REAL_BACKEND && BE.bundleId) refreshGalleryFromApi();
   if(!S.gallery.length){ return emptyState(v,"Gallery","Nothing here yet","Run a mini app and your results will show up here."); }
   v.innerHTML = `
     <div class="topbar"><div><h1>Gallery</h1><div class="sub">${S.gallery.length} creation${S.gallery.length>1?'s':''}</div></div>
       <div class="top-right"><button class="btn btn-primary" data-route="#/create">✦ Create</button></div></div>
     <div class="gal-grid">${S.gallery.map(galCard).join("")}</div>`;
+}
+
+/* Pull the user's jobs from the API and merge into S.gallery, then re-render. */
+let _galleryLoading=false;
+async function refreshGalleryFromApi(){
+  if(_galleryLoading) return; _galleryLoading=true;
+  const res = await fetchJobs(1, 50);
+  _galleryLoading=false;
+  if(!res || !Array.isArray(res.items)) return;
+  const byRun = new Map(S.gallery.filter(g=>g.runId).map(g=>[g.runId,g]));
+  for(const it of res.items){
+    const s = SERVICES.find(x=>BE.workflows[x.id]===it.workflowId) || svc("t2i");
+    const mapped = {
+      id: it.jobId, runId: it.runId, svc: s.id,
+      status: it.status==="completed" ? "success" : (it.status==="failed"||it.status==="cancelled") ? "failed" : "processing",
+      prompt: (it.input&&(it.input.prompt||it.input.positivePrompt))||"",
+      input: it.input||{}, output: it.output ? parseOutput(s, it.output) : null,
+      ts: it.createdAt ? Date.parse(it.createdAt) : Date.now(),
+    };
+    const existing = byRun.get(it.runId);
+    if(existing) Object.assign(existing, mapped); else S.gallery.unshift(mapped);
+  }
+  S.gallery.sort((a,b)=>b.ts-a.ts); save();
+  if(location.hash==="#/gallery") render();
 }
 function galCard(g){
   const s=svc(g.svc);

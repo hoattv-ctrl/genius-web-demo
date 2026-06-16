@@ -14,12 +14,9 @@
      NEXT_PUBLIC_BE_BASE, NEXT_PUBLIC_BUNDLE_ID, NEXT_PUBLIC_WORKFLOW_*  (all client-safe)
    ───────────────────────────────────────────────────────────────────────── */
 window.CONFIG = {
-  // PUBLIC DEMO = mock mode. Generation returns sample assets so the whole flow
-  // is testable without calling BE. To go live: set useRealBackend:true + fill
-  // bundleId (kept out of this public file on purpose). See README.
-  useRealBackend: false,
-  beBase: "",
-  bundleId: "",
+  useRealBackend: true,                               // t2i wired; needs bundleId below to actually run
+  beBase: "https://api-ai-genius-iip055.aperogroup.ai", // web API base (IIP055). dev/prod per BE.
+  bundleId: "aiphotogenerator.aifaceeditor.aivideogenerator.aibeauty.web", // whitelisted by BE; resolves the signing key server-side
 
   // Map each mini-app service id → its workflowId on the workflow service.
   // Fill these in as BE sends them. A service with no id here falls back to mock.
@@ -39,10 +36,15 @@ window.CONFIG = {
   // Project settings → Your apps → Web app → SDK setup. Leave blank = demo/mock mode.
   // Setup steps: see firebase-setup.md
   firebase: {
-    apiKey: "",
-    authDomain: "",          // e.g. genius-web.firebaseapp.com  (add app.genius.aperogroup.io to Authorized domains)
-    projectId: "",
-    appId: "",
-    // messagingSenderId, storageBucket — optional for auth-only
+    // Firebase project iip055-genius, web app "test-noti-web". Web config is
+    // CLIENT-SAFE (public by design; secured by Authorized Domains + rules).
+    // ⚠ Add localhost + hoattv-ctrl.github.io to Auth → Settings → Authorized domains.
+    apiKey: "AIzaSyAAP0F3fVHjjf5-u8n0slwvo8MZFLaHsFg",
+    authDomain: "iip055-genius.firebaseapp.com",
+    projectId: "iip055-genius",
+    appId: "1:965419273267:web:19471f4a6e57d48db0e746",
+    messagingSenderId: "965419273267",
+    storageBucket: "iip055-genius.firebasestorage.app",
+    measurementId: "G-YDSMGWP07G"
   }
 };
