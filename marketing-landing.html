@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Genius — AI Photo & Video Templates</title>
+<meta name="description" content="Turn your photo into a World Cup star with Genius. Pick a template, add your photo, get a stadium-ready video. Download Genius on the App Store." />
+<meta property="og:title" content="Genius — AI Photo & Video Templates" />
+<meta property="og:description" content="Your photo, on the World Cup stage. Pick a template and create in the Genius app." />
+<!--
+  GENIUS WEB — app-style discovery surface (acquisition funnel).
+  Tapping a template behaves like a deeplink → forwards to the Genius App Store page.
+  Genius monetizes via SUBSCRIPTION (Genius Pro) in-app. Template media = mock (local assets).
+-->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#000; --sidebar:#0B0A0F; --card:#15131D; --card-2:#1E1C28; --surface-3:#382D4A;
+    --hairline:rgba(255,255,255,.08);
+    --tx:#FFF; --tx2:#A3AEC7; --tx3:#6B7280;
+    --primary:#9B4DFF; --primary-2:#7A2BF6;
+    --grad:linear-gradient(135deg,#B14DFF 0%,#7A2BF6 100%);
+    --glow:0 8px 32px rgba(123,47,247,.45);
+    --r:14px; --r-lg:20px; --pill:999px;
+    --font:"Satoshi",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --sbw:256px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;line-height:1.4}
+  a{color:inherit;text-decoration:none}
+  img,video{display:block}
+  ::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-thumb{background:#2a2730;border-radius:8px}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;cursor:pointer;border:none;padding:11px 20px;border-radius:var(--pill);transition:transform .15s,box-shadow .2s,background .2s}
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:var(--glow)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 40px rgba(123,47,247,.6)}
+  .btn-ghost{background:rgba(255,255,255,.07);color:#fff;border:1px solid var(--hairline)}
+  .btn-ghost:hover{background:rgba(255,255,255,.13)}
+  .btn-sm{padding:8px 15px;font-size:13px}
+  .apple{width:15px;height:15px;fill:currentColor}
+  .ico{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* ===== Layout shell ===== */
+  .app{display:flex;min-height:100vh}
+  .sidebar{width:var(--sbw);flex:none;background:var(--sidebar);border-right:1px solid var(--hairline);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:22px 16px}
+  .main{flex:1;min-width:0;padding:24px 32px 60px}
+
+  /* ===== Sidebar ===== */
+  .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;letter-spacing:-.5px;padding:6px 8px 22px}
+  .brand .mark{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-size:17px;box-shadow:var(--glow)}
+  .nav{display:flex;flex-direction:column;gap:3px}
+  .nav a{display:flex;align-items:center;gap:13px;padding:11px 12px;border-radius:12px;color:var(--tx2);font-weight:500;font-size:15px;transition:.15s}
+  .nav a:hover{background:rgba(255,255,255,.05);color:#fff}
+  .nav a.active{background:linear-gradient(90deg,rgba(155,77,255,.22),rgba(155,77,255,.06));color:#fff;border:1px solid rgba(155,77,255,.35)}
+  .nav a.active .ico{stroke:var(--primary)}
+
+  .pro-card{margin-top:auto;background:var(--card);border:1px solid rgba(155,77,255,.3);border-radius:var(--r-lg);padding:18px;position:relative;overflow:hidden}
+  .pro-card::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 0,rgba(155,77,255,.25),transparent 70%)}
+  .pro-card>*{position:relative}
+  .pro-card .t{display:flex;align-items:center;gap:7px;font-weight:800;margin-bottom:6px}
+  .pro-card .t .crown{color:#FFC83D}
+  .pro-card .t b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pro-card p{color:var(--tx2);font-size:13px;margin-bottom:14px}
+  .pro-card .btn{width:100%;justify-content:center}
+
+  .me{display:flex;align-items:center;gap:10px;margin-top:16px;padding:10px 8px;border-radius:12px;cursor:pointer}
+  .me:hover{background:rgba(255,255,255,.05)}
+  .me .av{width:36px;height:36px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+  .me .nm{font-weight:700;font-size:14px}
+  .me .free{font-size:10px;font-weight:700;color:#A3AEC7;background:rgba(255,255,255,.08);padding:2px 7px;border-radius:var(--pill)}
+
+  /* ===== Top bar ===== */
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:16px}
+  .topbar h1{font-size:26px;font-weight:900;letter-spacing:-.5px}
+  .top-right{display:flex;align-items:center;gap:10px}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;padding:9px 15px;border-radius:var(--pill);border:1px solid var(--hairline);background:rgba(255,255,255,.04);cursor:pointer}
+  .chip .crown{color:#FFC83D}
+  .ibtn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--hairline);background:rgba(255,255,255,.04);cursor:pointer;color:var(--tx2)}
+  .ibtn:hover{color:#fff}
+
+  /* ===== Tabs ===== */
+  .tabs{display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:22px}
+  .tabs a{white-space:nowrap;padding:9px 16px;border-radius:var(--pill);color:var(--tx2);font-weight:600;font-size:14.5px;transition:.15s}
+  .tabs a:hover{color:#fff;background:rgba(255,255,255,.05)}
+  .tabs a.active{background:var(--grad);color:#fff;box-shadow:var(--glow)}
+
+  /* ===== Hero ===== */
+  .hero{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:300px;display:flex;align-items:center;margin-bottom:36px;border:1px solid var(--hairline);background:var(--card-2)}
+  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .hero .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,6,14,.96) 0%,rgba(8,6,14,.82) 38%,rgba(8,6,14,.25) 70%,rgba(8,6,14,.15) 100%)}
+  .hero .inner{position:relative;padding:44px 48px;max-width:560px}
+  .pill-tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;padding:6px 14px;border-radius:var(--pill);color:#E9D5FF;background:rgba(155,77,255,.18);border:1px solid rgba(155,77,255,.35);margin-bottom:18px}
+  .hero h2{font-size:clamp(30px,3.4vw,42px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:14px}
+  .hero h2 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--tx2);font-size:16px;max-width:42ch;margin-bottom:24px}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+
+  /* ===== Rows ===== */
+  .row-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 16px}
+  .row-head h3{display:flex;align-items:center;gap:9px;font-size:20px;font-weight:900;letter-spacing:-.5px}
+  .row-head .see{color:var(--tx2);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+  .row-head .see:hover{color:var(--primary)}
+  .rail{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(180px,15vw,220px);gap:16px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+
+  .tpl{position:relative;border-radius:var(--r);overflow:hidden;cursor:pointer;aspect-ratio:4/5;background:var(--card-2);border:1px solid var(--hairline);scroll-snap-align:start;transition:transform .2s,border-color .2s,box-shadow .2s}
+  .tpl:hover{transform:translateY(-4px);border-color:rgba(155,77,255,.6);box-shadow:var(--glow)}
+  .tpl.active{border-color:var(--primary);box-shadow:var(--glow)}
+  .tpl video,.tpl img{width:100%;height:100%;object-fit:cover}
+  .tpl .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,0) 42%)}
+  .tpl .pro-badge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:800;letter-spacing:.5px;padding:4px 9px;border-radius:var(--pill);background:var(--grad);display:flex;align-items:center;gap:4px}
+  .tpl .meta{position:absolute;left:0;right:0;bottom:0;padding:12px 13px}
+  .tpl .meta .nm{font-size:15px;font-weight:700;margin-bottom:5px}
+  .tpl .meta .kind{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--tx2);font-weight:600}
+  .tpl .meta .kind .ico{width:14px;height:14px}
+
+  footer{margin-top:46px;padding-top:24px;border-top:1px solid var(--hairline);color:var(--tx3);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer a{color:var(--tx2)} footer a:hover{color:#fff}
+
+  @media(max-width:900px){
+    .sidebar{display:none}
+    .main{padding:18px 18px 50px}
+    .hero .inner{padding:28px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">✦</span> Genius</div>
+    <nav class="nav">
+      <a class="active" href="#"><svg class="ico" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg> Home</a>
+      <a href="#" onclick="return openTemplate('genius://templates')"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Templates</a>
+      <a href="#" onclick="return getApp('nav_avatar')"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> AI Avatar</a>
+      <a href="#" onclick="return getApp('nav_video')"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z" fill="currentColor" stroke="none"/></svg> AI Video</a>
+      <a href="#" onclick="return getApp('nav_image')"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg> AI Image</a>
+      <a href="#" onclick="return getApp('nav_reels')"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M9 4 7 9m6-5-2 5"/></svg> AI Reels</a>
+      <a href="#" onclick="return getApp('nav_fx')"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/><path d="M18 15l.9 2.1 2.1.9-2.1.9L18 21l-.9-2.1-2.1-.9 2.1-.9z"/></svg> AI Effects</a>
+      <a href="#" onclick="return getApp('nav_tools')"><svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><path d="M8 7h12"/><circle cx="15" cy="12" r="2"/><path d="M4 12h9m4 0h3"/><circle cx="9" cy="17" r="2"/><path d="M4 17h3m4 0h9"/></svg> AI Tools</a>
+      <a href="#" onclick="return getApp('nav_projects')"><svg class="ico" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> My Projects</a>
+      <a href="#" onclick="return getApp('nav_fav')"><svg class="ico" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-9.5-9A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 9.5 5c-2.5 4.5-9.5 9-9.5 9z"/></svg> Favorites</a>
+    </nav>
+
+    <div class="pro-card">
+      <div class="t"><span class="crown">👑</span> <b>Genius Pro</b></div>
+      <p>Unlock all templates and premium features.</p>
+      <button class="btn btn-primary btn-sm" onclick="return getApp('side_pro')">Upgrade now</button>
+    </div>
+
+    <div class="me" onclick="return getApp('profile')">
+      <div class="av">E</div>
+      <div style="flex:1"><div class="nm">Emma Johnson</div><span class="free">Free</span></div>
+      <svg class="ico" style="width:16px" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <h1>Home</h1>
+      <div class="top-right">
+        <span class="chip" onclick="return getApp('top_pro')"><span class="crown">👑</span> Genius Pro</span>
+        <span class="chip">? Help</span>
+        <div class="ibtn"><svg class="ico" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.5 21a2 2 0 0 1-3 0"/></svg></div>
+        <button class="btn btn-primary" onclick="return getApp('create')">✦ Create</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <a class="active" href="#">For you</a>
+      <a href="#">Trending</a>
+      <a href="#templates">World Cup Special ⚽</a>
+      <a href="#">AI Dance</a>
+      <a href="#">AI Hug</a>
+      <a href="#">AI Kiss</a>
+      <a href="#">Cinematic</a>
+      <a href="#">AI Hair</a>
+      <a href="#">AI Photo</a>
+      <a href="#">More ▾</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <video src="assets/wc.mp4" muted loop autoplay playsinline preload="metadata"></video>
+      <div class="scrim"></div>
+      <div class="inner">
+        <span class="pill-tag">⚽ World Cup Special</span>
+        <h2>Your photo,<br><span class="grad">on the World Cup stage.</span></h2>
+        <p>Pick a template, drop in your selfie, and Genius turns you into a stadium-ready star — as a photo or a video.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#" onclick="return getApp('hero')">
+            <svg class="apple" viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM256.6 93c30.3-36 27.6-68.9 26.7-80.7-26.8 1.6-57.8 18.3-75.5 38.9-19.5 22.1-31 49.4-28.5 80.1 29 2.2 55.5-12.7 77.3-38.3z"/></svg>
+            Get Genius — free
+          </a>
+          <a class="btn btn-ghost" href="#templates">Browse templates</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- World Cup Templates -->
+    <div class="row-head" id="templates">
+      <h3>⚽ World Cup Templates</h3>
+      <a class="see" href="#" onclick="return openTemplate('genius://templates?cat=worldcup')">See all →</a>
+    </div>
+    <div class="rail">
+      <div class="tpl active" onclick="openTemplate('genius://feature?type=seedance_i2v&style=wc_crowd_roar&utm_keyword=worldcup_web')">
+        <video src="assets/wc.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <span class="pro-badge">👑 Pro</span>
+        <div class="meta"><div class="nm">Crowd Roar</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=seedance_i2v&style=wc_trophy_lift&utm_keyword=worldcup_web')">
+        <video src="assets/wc.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <span class="pro-badge">👑 Pro</span>
+        <div class="meta"><div class="nm">Trophy Lift</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=seedance_i2v&style=wc_hero_walk&utm_keyword=worldcup_web')">
+        <video src="assets/kid1.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <div class="meta"><div class="nm">Hero Walk</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=seedance_i2v&style=wc_fan_fever&utm_keyword=worldcup_web')">
+        <video src="assets/kid2.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <span class="pro-badge">👑 Pro</span>
+        <div class="meta"><div class="nm">Fan Fever</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=seedance_i2v&style=wc_game_on&utm_keyword=worldcup_web')">
+        <video src="assets/wc.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <div class="meta"><div class="nm">Game On</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=restyle&style=wc_champion&utm_keyword=worldcup_web')">
+        <img src="assets/brazil.png" alt="Champion" loading="lazy" /><div class="scrim"></div>
+        <span class="pro-badge">👑 Pro</span>
+        <div class="meta"><div class="nm">Champion</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/></svg> Image</span></div>
+      </div>
+    </div>
+
+    <!-- Trending -->
+    <div class="row-head">
+      <h3>🔥 Trending</h3>
+      <a class="see" href="#" onclick="return openTemplate('genius://templates?cat=trending')">See all →</a>
+    </div>
+    <div class="rail">
+      <div class="tpl" onclick="openTemplate('genius://feature?type=restyle&style=jersey_japan&utm_keyword=web')">
+        <img src="assets/japan.png" alt="Japan kit" loading="lazy"/><div class="scrim"></div>
+        <div class="meta"><div class="nm">Japan Kit 🇯🇵</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/></svg> Image</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=restyle&style=jersey_netherlands&utm_keyword=web')">
+        <img src="assets/netherlands.png" alt="Netherlands kit" loading="lazy"/><div class="scrim"></div>
+        <div class="meta"><div class="nm">Netherlands Kit 🇳🇱</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/></svg> Image</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=seedance_i2v&style=trend_anthem&utm_keyword=web')">
+        <video src="assets/wc.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <span class="pro-badge">👑 Pro</span>
+        <div class="meta"><div class="nm">Fan Anthem</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=seedance_i2v&style=trend_kids&utm_keyword=web')">
+        <video src="assets/kid1.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <div class="meta"><div class="nm">Spring Bloom</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=restyle&style=jersey_brazil&utm_keyword=web')">
+        <img src="assets/brazil.png" alt="Brazil kit" loading="lazy"/><div class="scrim"></div>
+        <div class="meta"><div class="nm">Brazil Kit 🇧🇷</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/></svg> Image</span></div>
+      </div>
+      <div class="tpl" onclick="openTemplate('genius://feature?type=seedance_i2v&style=trend_easter&utm_keyword=web')">
+        <video src="assets/kid2.mp4" muted loop autoplay playsinline preload="metadata"></video><div class="scrim"></div>
+        <span class="pro-badge">👑 Pro</span>
+        <div class="meta"><div class="nm">Easter Day</div><span class="kind"><svg class="ico" viewBox="0 0 24 24"><path d="m9 8 6 4-6 4z" fill="currentColor" stroke="none"/></svg> Video</span></div>
+      </div>
+    </div>
+
+    <footer>
+      <span>© 2026 Apero Technologies Group PTE. LTD.</span>
+      <span><a href="https://sites.google.com/view/genius-ios-privacy-policy/home">Privacy</a> · <a href="#" onclick="return getApp('foot')">Download</a> · Made with ✦ Genius</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+/* Tapping a template = deeplink intent → forward to the App Store (deferred deeplink). */
+const STORE_URL = "https://apps.apple.com/us/app/genius-ai-photo-editor/id6758941687";
+function openTemplate(deeplink){
+  window.location.href = STORE_URL + "?utm_source=web&utm_campaign=worldcup&utm_content=" + encodeURIComponent(deeplink);
+  return false;
+}
+function getApp(p){
+  window.location.href = STORE_URL + "?utm_source=web&utm_campaign=worldcup&utm_content=cta_" + p;
+  return false;
+}
+</script>
+</body>
+</html>
