@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Genius — AI Creation Studio</title>
-<meta name="description" content="Generate AI images and videos right in your browser. Pick a mini app, add a prompt or photo, get your result. Free during alpha; Genius Pro for unlimited." />
+<meta name="description" content="Generate AI images and videos right in your browser. Pick a mini app, add a prompt or photo, get your result. Free to start. Genius Pro for unlimited HD, no watermark." />
 <!--
   GENIUS WEB — Pixverse-pattern AI portal (M0 prototype).
   Logic mirrors app.pixverse.ai: Home feed → pick a Mini App → input → generate
@@ -28,158 +28,160 @@
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#000; --sidebar:#0B0A0F; --card:#15131D; --card-2:#1E1C28; --surface-3:#382D4A;
-    --hairline:rgba(255,255,255,.08);
-    --tx:#FFF; --tx2:#A3AEC7; --tx3:#6B7280;
-    --primary:#9B4DFF; --primary-2:#7A2BF6;
+    /* ===== Dark theme — Google AI Studio inspired ===== */
+    --bg:#131314; --sidebar:#1b1c1d; --card:#1e1f20; --card-2:#26282a; --surface-3:#2f3133;
+    --hairline:rgba(255,255,255,.10);
+    --tx:#e8eaed; --tx2:#9aa0a6; --tx3:#6e7681;
+    --surf2:#26282a;
+    --primary:#b794f6; --primary-2:#a37bf2;
     --grad:linear-gradient(135deg,#B14DFF 0%,#7A2BF6 100%);
-    --glow:0 8px 32px rgba(123,47,247,.45);
-    --ok:#3DD68C; --warn:#FFC83D; --err:#FF5C7A;
-    --r:14px; --r-lg:20px; --pill:999px;
+    --glow:none;
+    --shadow-hover:0 1px 0 rgba(255,255,255,.04);
+    --tint:rgba(183,148,246,.14);
+    --tint-2:rgba(183,148,246,.30);
+    --ok:#5bd6a0; --warn:#f5c451; --err:#f2849e;
+    --r:12px; --r-lg:16px; --pill:999px;
     --font:"Satoshi",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    --sbw:248px;
+    --sbw:260px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;line-height:1.45}
+  body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;line-height:1.5}
   a{color:inherit;text-decoration:none}
   img,video{display:block}
   button{font-family:inherit}
-  ::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-thumb{background:#2a2730;border-radius:8px}
+  ::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-thumb{background:#3a3c3f;border-radius:8px}::-webkit-scrollbar-thumb:hover{background:#4a4d50}
 
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:14px;cursor:pointer;border:none;padding:11px 20px;border-radius:var(--pill);transition:transform .15s,box-shadow .2s,background .2s,opacity .2s}
-  .btn:disabled{opacity:.5;cursor:not-allowed}
-  .btn-primary{background:var(--grad);color:#fff;box-shadow:var(--glow)}
-  .btn-primary:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 12px 40px rgba(123,47,247,.6)}
-  .btn-ghost{background:rgba(255,255,255,.07);color:#fff;border:1px solid var(--hairline)}
-  .btn-ghost:hover{background:rgba(255,255,255,.13)}
-  .btn-sm{padding:8px 15px;font-size:13px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:14px;cursor:pointer;border:none;padding:9px 18px;border-radius:var(--pill);transition:background .15s,border-color .15s,opacity .15s;letter-spacing:-.1px}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn-primary{background:var(--primary);color:#1a1024}
+  .btn-primary:not(:disabled):hover{background:var(--primary-2)}
+  .btn-ghost{background:transparent;color:var(--tx);border:1px solid var(--hairline)}
+  .btn-ghost:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2)}
+  .btn-sm{padding:7px 14px;font-size:13px}
   .btn-block{width:100%}
   .ico{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
-  .credit-pill{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px;padding:7px 13px;border-radius:var(--pill);background:rgba(155,77,255,.16);border:1px solid rgba(155,77,255,.35);color:#E9D5FF}
-  .credit-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--primary)}
+  .credit-pill{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:13px;padding:6px 12px;border-radius:var(--pill);background:var(--tint);border:1px solid var(--tint-2);color:#d8c4ff}
+  .credit-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--primary)}
 
   /* ===== Layout shell ===== */
   .app{display:flex;min-height:100vh}
-  .sidebar{width:var(--sbw);flex:none;background:var(--sidebar);border-right:1px solid var(--hairline);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:20px 14px;overflow-y:auto}
-  .main{flex:1;min-width:0;padding:22px 30px 70px}
+  .sidebar{width:var(--sbw);flex:none;background:var(--sidebar);border-right:1px solid var(--hairline);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:18px 12px;overflow-y:auto}
+  .main{flex:1;min-width:0;padding:28px 40px 80px;max-width:1280px;margin:0 auto;width:100%}
 
   /* ===== Sidebar ===== */
-  .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.5px;padding:6px 8px 18px}
-  .brand .mark{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-size:17px;box-shadow:var(--glow)}
-  .nav{display:flex;flex-direction:column;gap:3px}
-  .nav-lbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);padding:14px 12px 6px}
-  .nav a{display:flex;align-items:center;gap:13px;padding:10px 12px;border-radius:12px;color:var(--tx2);font-weight:600;font-size:14.5px;transition:.15s;cursor:pointer}
-  .nav a:hover{background:rgba(255,255,255,.05);color:#fff}
-  .nav a.active{background:linear-gradient(90deg,rgba(155,77,255,.22),rgba(155,77,255,.06));color:#fff;border:1px solid rgba(155,77,255,.35)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.4px;padding:6px 10px 20px;color:var(--tx)}
+  .brand .mark{width:28px;height:28px;border-radius:8px;object-fit:cover;flex:none}
+  .nav{display:flex;flex-direction:column;gap:1px}
+  .nav-lbl{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--tx3);padding:18px 12px 6px}
+  .nav a{display:flex;align-items:center;gap:14px;padding:9px 12px;border-radius:10px;color:var(--tx2);font-weight:500;font-size:14px;transition:.12s;cursor:pointer}
+  .nav a:hover{background:rgba(255,255,255,.05);color:var(--tx)}
+  .nav a.active{background:var(--tint);color:#d8c4ff;font-weight:600}
   .nav a.active .ico{stroke:var(--primary)}
-  .nav a .badge{margin-left:auto;font-size:10px;font-weight:800;padding:2px 7px;border-radius:var(--pill);background:rgba(255,255,255,.1);color:var(--tx2)}
+  .nav a .badge{margin-left:auto;font-size:10px;font-weight:700;padding:2px 7px;border-radius:var(--pill);background:rgba(255,255,255,.08);color:var(--tx2)}
 
-  .wallet-card{margin-top:14px;background:var(--card);border:1px solid rgba(155,77,255,.3);border-radius:var(--r-lg);padding:15px;position:relative;overflow:hidden}
-  .wallet-card::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 0,rgba(155,77,255,.22),transparent 70%)}
+  .wallet-card{margin-top:auto;background:var(--card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:15px;position:relative;overflow:hidden}
+  .wallet-card::before{content:none}
   .wallet-card>*{position:relative}
-  .wallet-card .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx2)}
-  .wallet-card .bal{font-size:26px;font-weight:900;margin:2px 0 12px;display:flex;align-items:center;gap:7px}
+  .wallet-card .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3)}
+  .wallet-card .bal{font-size:22px;font-weight:700;margin:2px 0 12px;display:flex;align-items:center;gap:7px;color:var(--tx)}
   .wallet-card .bal .spark{font-size:18px}
 
-  .me{display:flex;align-items:center;gap:10px;margin-top:14px;padding:9px 8px;border-radius:12px;cursor:pointer}
+  .me{display:flex;align-items:center;gap:10px;margin-top:12px;padding:8px;border-radius:10px;cursor:pointer}
   .me:hover{background:rgba(255,255,255,.05)}
-  .me .av{width:34px;height:34px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
-  .me .nm{font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .me .tier{font-size:10px;font-weight:700;color:var(--tx2)}
+  .me .av{width:32px;height:32px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none;color:#fff}
+  .me .nm{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)}
+  .me .tier{font-size:11px;font-weight:500;color:var(--tx2)}
 
   /* ===== Top bar ===== */
-  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px}
-  .topbar h1{font-size:25px;font-weight:900;letter-spacing:-.5px}
-  .topbar .sub{color:var(--tx2);font-size:14px;margin-top:3px;font-weight:500}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px}
+  .topbar h1{font-size:24px;font-weight:700;letter-spacing:-.6px;color:var(--tx)}
+  .topbar .sub{color:var(--tx2);font-size:14px;margin-top:3px;font-weight:400}
   .top-right{display:flex;align-items:center;gap:10px}
 
-  /* ===== Prompt bar (home) ===== */
-  .prompt-bar{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--hairline);border-radius:var(--pill);padding:8px 8px 8px 20px;margin-bottom:30px;transition:border-color .2s}
-  .prompt-bar:focus-within{border-color:rgba(155,77,255,.6)}
-  .prompt-bar input{flex:1;background:none;border:none;color:#fff;font-size:15px;font-family:inherit;outline:none}
+  /* ===== Explore header (AI Studio style) ===== */
+  .explore-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:8px 0 26px}
+  .explore-head h2{font-size:30px;font-weight:500;letter-spacing:-.8px;color:var(--tx)}
+  .seg{display:inline-flex;background:var(--card-2);border:1px solid var(--hairline);border-radius:var(--pill);padding:3px}
+  .seg span{font-size:13px;font-weight:600;padding:6px 16px;border-radius:var(--pill);color:var(--tx2);cursor:default}
+  .seg span.on{background:var(--surface-3);color:var(--tx)}
+
+  /* ===== Prompt bar (AI Studio bottom bar) ===== */
+  .prompt-bar{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--hairline);border-radius:16px;padding:10px 10px 10px 18px;margin-bottom:30px;transition:border-color .15s}
+  .prompt-bar:focus-within{border-color:var(--tint-2)}
+  .prompt-bar input{flex:1;background:none;border:none;color:var(--tx);font-size:15px;font-family:inherit;outline:none}
   .prompt-bar input::placeholder{color:var(--tx3)}
 
-  /* ===== Hero ===== */
-  .hero{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:260px;display:flex;align-items:center;margin-bottom:36px;border:1px solid var(--hairline);background:var(--card-2)}
-  .hero video,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .hero .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,6,14,.96) 0%,rgba(8,6,14,.8) 40%,rgba(8,6,14,.2) 75%)}
-  .hero .inner{position:relative;padding:40px 44px;max-width:560px}
-  .pill-tag{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:var(--pill);color:#E9D5FF;background:rgba(155,77,255,.18);border:1px solid rgba(155,77,255,.35);margin-bottom:16px}
-  .hero h2{font-size:clamp(28px,3.2vw,40px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:13px}
-  .hero h2 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{color:var(--tx2);font-size:15.5px;max-width:42ch;margin-bottom:22px}
+  /* ===== Hero (kept for compat; minimal) ===== */
+  .hero{position:relative;border-radius:var(--r-lg);overflow:hidden;display:flex;align-items:center;margin-bottom:30px;border:1px solid var(--hairline);background:var(--card)}
+  .hero .scrim{position:absolute;inset:0}
+  .hero .inner{position:relative;padding:34px 38px;max-width:620px}
+  .pill-tag{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;padding:6px 13px;border-radius:var(--pill);color:#d8c4ff;background:var(--tint);border:1px solid var(--tint-2);margin-bottom:16px}
+  .hero h2{font-size:clamp(24px,2.6vw,32px);font-weight:600;line-height:1.12;letter-spacing:-.8px;margin-bottom:12px;color:var(--tx)}
+  .hero h2 .grad{color:var(--primary)}
+  .hero p{color:var(--tx2);font-size:15px;max-width:48ch;margin-bottom:22px}
   .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
 
-  /* ===== Section heads & grids ===== */
-  .row-head{display:flex;align-items:center;justify-content:space-between;margin:34px 0 16px}
-  .row-head h3{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:900;letter-spacing:-.5px}
-  .row-head .see{color:var(--tx2);font-size:13.5px;font-weight:700;cursor:pointer}
-  .row-head .see:hover{color:var(--primary)}
+  /* ===== Section heads ===== */
+  .row-head{display:flex;align-items:center;justify-content:space-between;margin:32px 0 16px}
+  .row-head h3{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;letter-spacing:-.3px;color:var(--tx)}
+  .row-head .see{color:var(--primary);font-size:13.5px;font-weight:600;cursor:pointer}
+  .row-head .see:hover{opacity:.75}
 
+  /* feed kept for compat (unused on home/service now) */
   .feed{columns:4;column-gap:16px}
   @media(max-width:1300px){.feed{columns:3}}
   @media(max-width:980px){.feed{columns:2}}
-  .feed .tile{break-inside:avoid;margin-bottom:16px;position:relative;border-radius:var(--r);overflow:hidden;cursor:pointer;background:var(--card-2);border:1px solid var(--hairline);transition:transform .2s,border-color .2s,box-shadow .2s}
-  .feed .tile:hover{transform:translateY(-3px);border-color:rgba(155,77,255,.6);box-shadow:var(--glow)}
+  .feed .tile{break-inside:avoid;margin-bottom:16px;position:relative;border-radius:var(--r);overflow:hidden;cursor:pointer;background:var(--card-2);border:1px solid var(--hairline)}
   .feed .tile video,.feed .tile img{width:100%;height:auto}
-  .feed .tile .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85),transparent 45%)}
+  .feed .tile .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82),transparent 48%)}
   .feed .tile .meta{position:absolute;left:0;right:0;bottom:0;padding:12px 13px}
-  .feed .tile .cap{font-size:13.5px;font-weight:700;margin-bottom:5px}
-  .feed .tile .svc{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2);font-weight:600}
-  .feed .tile .kbadge{position:absolute;top:9px;right:9px;font-size:10px;font-weight:800;padding:3px 8px;border-radius:var(--pill);background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;border:1px solid var(--hairline)}
+  .feed .tile .cap{font-size:13.5px;font-weight:700;margin-bottom:5px;color:#fff}
+  .feed .tile .svc{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.82);font-weight:500}
+  .feed .tile .kbadge{position:absolute;top:9px;right:9px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--pill);background:rgba(0,0,0,.5);color:#fff}
 
-  /* ===== Mini Apps catalog ===== */
-  .apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-  .app-card{position:relative;border-radius:var(--r-lg);overflow:hidden;cursor:pointer;border:1px solid var(--hairline);background:var(--card-2);transition:transform .2s,border-color .2s,box-shadow .2s}
-  .app-card:hover{transform:translateY(-4px);border-color:rgba(155,77,255,.6);box-shadow:var(--glow)}
-  .app-card .thumb{aspect-ratio:16/10;position:relative;background:var(--surface-3)}
-  .app-card .thumb video,.app-card .thumb img{width:100%;height:100%;object-fit:cover}
-  .app-card .thumb .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent 60%)}
-  .app-card .body{padding:14px 16px 16px}
-  .app-card .body h4{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
-  .app-card .body p{color:var(--tx2);font-size:13px;margin:5px 0 12px;min-height:34px}
-  .app-card .foot{display:flex;align-items:center;justify-content:space-between}
-  .modality{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:var(--pill);background:rgba(255,255,255,.08);color:var(--tx2)}
-  .cost{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;color:#E9D5FF}
-  /* coming-soon (non-M0 services) */
-  .app-card.soon{opacity:.6;cursor:default}
-  .app-card.soon:hover{transform:none;border-color:var(--hairline);box-shadow:none}
-  .app-card.soon .thumb{filter:grayscale(.6)}
-  .soon-badge{position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:var(--pill);background:rgba(0,0,0,.6);backdrop-filter:blur(4px);border:1px solid var(--hairline);color:#fff}
-  .cost.soon-tag{color:var(--tx3)}
+  /* ===== Feature cards (AI Studio model-card grid: icon + title + desc, NO media) ===== */
+  .apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .app-card{position:relative;border-radius:var(--r-lg);cursor:pointer;border:1px solid var(--hairline);background:var(--card);padding:20px;transition:background .15s,border-color .15s;min-height:150px;display:flex;flex-direction:column}
+  .app-card:hover{background:var(--card-2);border-color:rgba(255,255,255,.18)}
+  .ac-icon{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:18px;background:var(--tint);border:1px solid var(--tint-2);margin-bottom:14px}
+  .app-card h4{font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--tx);margin-bottom:6px}
+  .app-card p{color:var(--tx2);font-size:13.5px;line-height:1.5;flex:1}
+  .app-card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+  .modality{font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--tx3)}
+  .cost{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--primary)}
 
   /* ===== Service page ===== */
   .svc-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start}
   @media(max-width:980px){.svc-wrap{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:20px}
-  .panel h4{font-size:14px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .panel h4{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--tx)}
   .field{margin-bottom:16px}
-  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--tx2);margin-bottom:7px}
-  textarea,.upload{width:100%;background:var(--bg);border:1px solid var(--hairline);border-radius:var(--r);color:#fff;font-family:inherit;font-size:14px;padding:13px 14px;outline:none;transition:border-color .2s}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--tx2);margin-bottom:7px}
+  textarea,.upload{width:100%;background:var(--bg);border:1px solid var(--hairline);border-radius:var(--r);color:var(--tx);font-family:inherit;font-size:14px;padding:13px 14px;outline:none;transition:border-color .15s}
   textarea{resize:vertical;min-height:96px}
-  textarea:focus,.upload:focus-within{border-color:rgba(155,77,255,.6)}
-  .upload{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:150px;cursor:pointer;color:var(--tx2);text-align:center;border-style:dashed}
-  .upload:hover{color:#fff;border-color:rgba(155,77,255,.6)}
+  textarea:focus,.upload:focus-within{border-color:var(--tint-2)}
+  .upload{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:150px;cursor:pointer;color:var(--tx2);text-align:center;border-style:dashed;background:var(--card-2)}
+  .upload:hover{color:var(--tx);border-color:var(--tint-2)}
   .upload img{max-height:180px;width:auto;border-radius:10px}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .chip-opt{font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:var(--pill);border:1px solid var(--hairline);background:rgba(255,255,255,.04);color:var(--tx2);cursor:pointer;transition:.15s}
-  .chip-opt:hover{color:#fff}
-  .chip-opt.sel{background:var(--grad);color:#fff;border-color:transparent;box-shadow:var(--glow)}
+  .chip-opt{font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:var(--pill);border:1px solid var(--hairline);background:var(--card-2);color:var(--tx2);cursor:pointer;transition:.12s}
+  .chip-opt:hover{color:var(--tx);border-color:rgba(255,255,255,.2)}
+  .chip-opt.sel{background:var(--tint);color:#d8c4ff;border-color:var(--tint-2)}
   .runbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;padding-top:16px;border-top:1px solid var(--hairline)}
-  .runbar .costnote{font-size:13px;color:var(--tx2);font-weight:600}
-  .runbar .costnote b{color:#E9D5FF}
+  .runbar .costnote{font-size:13px;color:var(--tx2);font-weight:400}
+  .runbar .costnote b{color:var(--primary);font-weight:700}
 
   /* output canvas */
   .out{position:relative;aspect-ratio:1/1;border-radius:var(--r);overflow:hidden;background:var(--card-2);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;text-align:center}
   .out.video{aspect-ratio:9/16;max-height:480px;margin:0 auto}
   .out video,.out img{width:100%;height:100%;object-fit:cover}
-  .out .placeholder{color:var(--tx3);padding:24px}
+  .out .placeholder{color:var(--tx3);padding:24px;font-size:13.5px}
   .out .placeholder .ico{width:40px;height:40px;margin:0 auto 12px;stroke:var(--tx3)}
   .job{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--tx2)}
-  .spinner{width:42px;height:42px;border-radius:50%;border:3px solid rgba(255,255,255,.12);border-top-color:var(--primary);animation:spin .8s linear infinite}
+  .spinner{width:42px;height:42px;border-radius:50%;border:3px solid var(--hairline);border-top-color:var(--primary);animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .job .status{font-weight:700;font-size:14px;color:#fff}
+  .job .status{font-weight:700;font-size:14px;color:var(--tx)}
   .job .sub{font-size:12.5px}
   .out-actions{display:flex;gap:10px;margin-top:14px}
 
@@ -192,65 +194,66 @@
   .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
   .gal{position:relative;border-radius:var(--r);overflow:hidden;background:var(--card-2);border:1px solid var(--hairline);aspect-ratio:1/1}
   .gal video,.gal img{width:100%;height:100%;object-fit:cover}
-  .gal .st{position:absolute;top:9px;left:9px;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:var(--pill);display:flex;align-items:center;gap:5px}
-  .gal .st.processing{background:rgba(255,200,61,.18);color:var(--warn);border:1px solid rgba(255,200,61,.4)}
-  .gal .st.success{background:rgba(61,214,140,.16);color:var(--ok);border:1px solid rgba(61,214,140,.4)}
-  .gal .st.failed{background:rgba(255,92,122,.16);color:var(--err);border:1px solid rgba(255,92,122,.4)}
+  .gal .st{position:absolute;top:9px;left:9px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:var(--pill);display:flex;align-items:center;gap:5px;backdrop-filter:blur(4px)}
+  .gal .st.processing{background:rgba(245,196,81,.16);color:var(--warn);border:1px solid rgba(245,196,81,.3)}
+  .gal .st.success{background:rgba(91,214,160,.16);color:var(--ok);border:1px solid rgba(91,214,160,.3)}
+  .gal .st.failed{background:rgba(242,132,158,.16);color:var(--err);border:1px solid rgba(242,132,158,.3)}
   .gal .st .pulse{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 1s ease-in-out infinite}
   @keyframes pulse{50%{opacity:.3}}
-  .gal .gmeta{position:absolute;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);font-size:12px;font-weight:600}
-  .gal .proc-fill{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
+  .gal .gmeta{position:absolute;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(to top,rgba(0,0,0,.82),transparent);font-size:12px;font-weight:600;color:#fff}
+  .gal .proc-fill{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4)}
 
-  /* ===== Wallet ===== */
+  /* ===== Wallet / Plans ===== */
   .packs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:30px}
-  .pack{position:relative;border:1px solid var(--hairline);border-radius:var(--r-lg);padding:20px 18px;background:var(--card);cursor:pointer;transition:.15s;text-align:center}
-  .pack:hover{border-color:rgba(155,77,255,.6);transform:translateY(-3px)}
-  .pack.featured{border-color:var(--primary);box-shadow:var(--glow)}
-  .pack .tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 12px;border-radius:var(--pill);background:var(--grad);color:#fff}
-  .pack .cr{font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:7px}
+  .pack{position:relative;border:1px solid var(--hairline);border-radius:var(--r-lg);padding:22px 18px 18px;background:var(--card);cursor:pointer;transition:.15s;text-align:center}
+  .pack:hover{border-color:rgba(255,255,255,.2);background:var(--card-2)}
+  .pack.featured{border-color:var(--tint-2)}
+  .pack .tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 12px;border-radius:var(--pill);background:var(--primary);color:#1a1024;white-space:nowrap}
+  .pack .cr{font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;color:var(--tx)}
   .pack .cr .spark{font-size:20px}
-  .pack .nm{font-size:13px;font-weight:700;color:var(--tx2);margin:2px 0 14px}
-  .pack .price{font-size:18px;font-weight:900;margin-bottom:14px}
-  .pack .price small{font-size:11px;color:var(--tx3);font-weight:600;display:block;margin-top:2px}
+  .pack .nm{font-size:13px;font-weight:600;color:var(--tx2);margin:2px 0 14px}
+  .pack .price{font-size:18px;font-weight:700;margin-bottom:14px;color:var(--tx)}
+  .pack .price small{font-size:11px;color:var(--tx3);font-weight:500;display:block;margin-top:2px}
   .txns{background:var(--card);border:1px solid var(--hairline);border-radius:var(--r-lg);overflow:hidden}
   .txn{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--hairline);font-size:14px}
   .txn:last-child{border-bottom:none}
-  .txn .ti{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex:none;background:rgba(255,255,255,.06)}
+  .txn .ti{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex:none;background:var(--surf2)}
   .txn .td{flex:1}
-  .txn .td .t{font-weight:700}
+  .txn .td .t{font-weight:600;color:var(--tx)}
   .txn .td .d{font-size:12px;color:var(--tx3)}
-  .txn .amt{font-weight:800}
+  .txn .amt{font-weight:700}
   .txn .amt.plus{color:var(--ok)}.txn .amt.minus{color:var(--tx2)}
 
   /* ===== Earn ===== */
   .earn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
   .earn{background:var(--card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:20px}
-  .earn .ehead{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;margin-bottom:8px}
-  .earn .ehead .ei{width:36px;height:36px;border-radius:10px;background:rgba(155,77,255,.16);display:grid;place-items:center}
+  .earn .ehead{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;margin-bottom:8px;color:var(--tx)}
+  .earn .ehead .ei{width:36px;height:36px;border-radius:10px;background:var(--tint);display:grid;place-items:center}
   .earn p{color:var(--tx2);font-size:13px;margin-bottom:14px}
   .ref-link{display:flex;gap:8px;margin-bottom:14px}
   .ref-link input{flex:1;background:var(--bg);border:1px solid var(--hairline);border-radius:10px;color:var(--tx2);font-size:12.5px;padding:9px 12px;outline:none}
 
   /* ===== Modal ===== */
-  .scrim-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
-  .modal{background:var(--card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:30px;max-width:400px;width:100%;text-align:center;position:relative}
+  .scrim-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .modal{background:var(--card);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:30px;max-width:400px;width:100%;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5)}
   .modal .mclose{position:absolute;top:14px;right:14px;cursor:pointer;color:var(--tx3)}
-  .modal .mmark{width:54px;height:54px;border-radius:15px;background:var(--grad);display:grid;place-items:center;font-size:28px;margin:0 auto 16px;box-shadow:var(--glow)}
-  .modal h3{font-size:21px;font-weight:900;margin-bottom:6px}
+  .modal .mmark{width:54px;height:54px;border-radius:15px;overflow:hidden;display:grid;place-items:center;margin:0 auto 16px}
+  .modal .mmark img{width:100%;height:100%;object-fit:cover}
+  .modal h3{font-size:21px;font-weight:700;margin-bottom:6px;color:var(--tx)}
   .modal p{color:var(--tx2);font-size:14px;margin-bottom:20px}
   .auth-btns{display:flex;flex-direction:column;gap:10px}
-  .auth-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;border-radius:12px;border:1px solid var(--hairline);background:rgba(255,255,255,.05);color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:.15s}
-  .auth-btn:hover{background:rgba(255,255,255,.12)}
+  .auth-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;border-radius:12px;border:1px solid var(--hairline);background:var(--card-2);color:var(--tx);font-weight:600;font-size:14px;cursor:pointer;transition:.12s}
+  .auth-btn:hover{background:var(--surface-3);border-color:rgba(255,255,255,.2)}
 
   /* ===== Toast ===== */
   .toasts{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:200}
-  .toast{display:flex;align-items:center;gap:11px;background:var(--card-2);border:1px solid var(--hairline);border-radius:14px;padding:13px 16px;min-width:280px;max-width:360px;box-shadow:0 12px 40px rgba(0,0,0,.5);animation:slidein .3s ease}
+  .toast{display:flex;align-items:center;gap:11px;background:var(--card-2);border:1px solid var(--hairline);border-radius:14px;padding:13px 16px;min-width:280px;max-width:360px;box-shadow:0 12px 36px rgba(0,0,0,.45);animation:slidein .3s ease}
   @keyframes slidein{from{transform:translateX(40px);opacity:0}}
   .toast .tibox{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none}
-  .toast.ok .tibox{background:rgba(61,214,140,.16);color:var(--ok)}
-  .toast.info .tibox{background:rgba(155,77,255,.16);color:var(--primary)}
-  .toast.err .tibox{background:rgba(255,92,122,.16);color:var(--err)}
-  .toast .ttxt .tt{font-weight:800;font-size:13.5px}
+  .toast.ok .tibox{background:rgba(91,214,160,.16);color:var(--ok)}
+  .toast.info .tibox{background:var(--tint);color:var(--primary)}
+  .toast.err .tibox{background:rgba(242,132,158,.16);color:var(--err)}
+  .toast .ttxt .tt{font-weight:700;font-size:13.5px;color:var(--tx)}
   .toast .ttxt .ts{font-size:12px;color:var(--tx2)}
 
   .empty{text-align:center;padding:70px 20px;color:var(--tx3)}
@@ -261,16 +264,51 @@
     .sidebar{display:none}
     .main{padding:16px 16px 60px}
     .hero .inner{padding:26px}
+    .explore-head h2{font-size:24px}
+    .dock{left:0;padding:12px 14px 16px}
+    .canvas{margin-bottom:8px}
   }
+
+  /* ===== Studio (service page: big result canvas + fixed bottom dock — Flow / AI Studio) ===== */
+  .studio{position:relative;display:flex;flex-direction:column;min-height:calc(100vh - 120px);padding-bottom:180px}
+  .studio .svc-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+  .studio .svc-head h1{font-size:20px;font-weight:600;letter-spacing:-.4px;display:flex;align-items:center;gap:9px;color:var(--tx)}
+  .canvas{flex:1;min-height:46vh;border-radius:var(--r-lg);background:var(--card);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:18px;margin-bottom:14px}
+  .canvas img,.canvas video{max-width:100%;max-height:66vh;border-radius:var(--r);object-fit:contain}
+  .canvas .placeholder{color:var(--tx3);font-size:14px;line-height:1.6}
+  .canvas .placeholder .ico{width:44px;height:44px;margin:0 auto 12px;stroke:var(--tx3)}
+  .canvas .job{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--tx2)}
+
+  /* bottom dock (prompt bar fixed to viewport bottom, offset by sidebar) */
+  .dock{position:fixed;left:var(--sbw);right:0;bottom:0;padding:14px 36px 22px;background:linear-gradient(to top,var(--bg) 60%,transparent);z-index:30}
+  .dock-inner{max-width:860px;margin:0 auto;background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:8px 10px;box-shadow:0 10px 36px rgba(0,0,0,.45)}
+  .dock-ctls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 4px 8px}
+  .dock-row{display:flex;align-items:flex-end;gap:10px}
+  .dock-row textarea{flex:1;background:none;border:none;color:var(--tx);font-family:inherit;font-size:15px;padding:9px 6px;outline:none;resize:none;min-height:24px;max-height:140px;line-height:1.45}
+  .dock-row textarea::placeholder{color:var(--tx3)}
+  .ctl{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:var(--pill);border:1px solid var(--hairline);background:var(--card-2);color:var(--tx2);cursor:pointer;transition:.12s}
+  .ctl:hover{color:var(--tx);border-color:rgba(255,255,255,.2)}
+  .ctl.static{cursor:default;color:#d8c4ff;background:var(--tint);border-color:var(--tint-2)}
+  .ctl.static:hover{color:#d8c4ff;border-color:var(--tint-2)}
+  .ctl-lbl{font-size:11px;color:var(--tx3);font-weight:600;margin:0 -2px 0 4px}
+  .ctl-group{display:inline-flex;gap:3px;padding:3px;background:var(--card-2);border:1px solid var(--hairline);border-radius:var(--pill)}
+  .ctl-group .ctl{border:none;background:none;padding:5px 11px}
+  .ctl-group .ctl.on{background:var(--surface-3);color:var(--tx)}
+  .send{width:40px;height:40px;flex:none;border-radius:50%;border:none;background:var(--primary);color:#1a1024;display:grid;place-items:center;cursor:pointer;transition:.15s}
+  .send:hover{background:var(--primary-2)}
+  .send:disabled{opacity:.5;cursor:not-allowed}
+  .dock-up{width:38px;height:38px;flex:none;border-radius:11px;border:1px solid var(--hairline);background:var(--card-2);display:grid;place-items:center;cursor:pointer;color:var(--tx2);overflow:hidden}
+  .dock-up:hover{color:var(--tx);border-color:rgba(255,255,255,.2)}
+  .dock-up img{width:100%;height:100%;object-fit:cover}
 </style>
 </head>
 <body>
 <div class="app">
   <!-- ===== Sidebar ===== -->
   <aside class="sidebar">
-    <div class="brand"><span class="mark">✦</span> Genius</div>
+    <div class="brand"><img class="mark" src="assets/logo.png" alt="Genius logo"/> Genius</div>
     <nav class="nav" id="nav">
-      <div class="nav-lbl">Discover</div>
+      <div class="nav-lbl">Explore</div>
       <a data-route="#/home"><svg class="ico" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg> Home</a>
       <a data-route="#/create"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Create <span class="badge" id="nav-count"></span></a>
       <div class="nav-lbl">Your stuff</div>
@@ -281,7 +319,7 @@
 
     <div class="wallet-card">
       <div class="lbl" id="sb-lbl">Your plan</div>
-      <div class="bal" style="font-size:19px" id="sb-plan">Free · alpha</div>
+      <div class="bal" style="font-size:19px" id="sb-plan">Free plan</div>
       <button class="btn btn-primary btn-sm btn-block" data-route="#/wallet" id="sb-cta">👑 Go Pro</button>
     </div>
 
@@ -326,6 +364,22 @@ const BE = {
   bundleId: CFG.bundleId || "",          // whitelisted by BE; resolves the signing key server-side
   // service id → workflowId on the workflow service (filled in config.js as BE sends them).
   workflows: CFG.workflows || { t2i: "3e01896a-fef2-4896-9a97-b68960d19170" }
+};
+
+/* ---------- Billing (Genius Pro subscription) — PRODUCTION-READY hook ----------
+   Selling is live: subscribe() calls startCheckout(), which (when billing is
+   configured) creates a provider-hosted Checkout session via BE and redirects.
+   The browser only sends identity headers — the payment provider (Stripe/etc.)
+   and its secret keys live on BE. To go live: set CONFIG.billing.useRealCheckout,
+   the prices map, and stand up the two BE endpoints below. No client code change.
+   With billing unconfigured it falls back to a local mock so the flow still demos. */
+const BILLING = {
+  enabled: !!(CFG.billing && CFG.billing.useRealCheckout),
+  createSessionPath: (CFG.billing && CFG.billing.createSessionPath) || "/api/v1/web/billing/checkout",
+  statusPath:        (CFG.billing && CFG.billing.statusPath)        || "/api/v1/web/billing/status",
+  prices:            (CFG.billing && CFG.billing.prices)            || {},   // planId -> provider price id
+  successUrl:        (CFG.billing && CFG.billing.successUrl)        || (location.origin + location.pathname + "?billing=success"),
+  cancelUrl:         (CFG.billing && CFG.billing.cancelUrl)         || (location.origin + location.pathname + "?billing=cancel"),
 };
 
 /* ---------- Service catalog (mini apps) ----------
@@ -381,7 +435,7 @@ const FEED = [
 ];
 
 /* ---------- Genius Pro subscription plans (the paid product — NOT credits) ----------
-   USD amounts indicative; finalized at M1. Pro = unlimited generations. */
+   USD amounts shown are the selling prices; map each plan id to a provider price in CONFIG.billing.prices. Pro = unlimited generations. */
 const PLANS = [
   { id:"weekly",  nm:"Pro Weekly",  usd:"$4.99",  per:"week" },
   { id:"monthly", nm:"Pro Monthly", usd:"$9.99",  per:"month", featured:true, tag:"Most popular" },
@@ -410,7 +464,7 @@ const media = (m)=> m.type==="video"
   : `<img src="${m.src}" alt="" loading="lazy"/>`;
 const planPill = ()=> isPro()
   ? `<span class="credit-pill"><span class="dot"></span>👑 Genius Pro</span>`
-  : `<span class="credit-pill"><span class="dot"></span>Free · alpha</span>`;
+  : `<span class="credit-pill"><span class="dot"></span>Free plan</span>`;
 
 function toast(kind,title,sub){
   const icons={ok:'<path d="M20 6 9 17l-5-5"/>',info:'<path d="M12 16v-5"/><circle cx="12" cy="8" r=".5" fill="currentColor"/>',err:'<path d="M18 6 6 18M6 6l12 12"/>'};
@@ -422,7 +476,7 @@ function toast(kind,title,sub){
 /* ---------- Sidebar / chrome sync ---------- */
 function syncChrome(){
   const nc=$("#nav-count"); if(nc) nc.textContent = M0_SERVICES.length;
-  $("#sb-plan").textContent = isPro() ? "👑 Genius Pro" : "Free · alpha";
+  $("#sb-plan").textContent = isPro() ? "👑 Genius Pro" : "Free plan";
   const cta=$("#sb-cta");
   if(isPro()){ cta.textContent="👑 Pro active"; cta.disabled=true; } else { cta.textContent="👑 Go Pro"; cta.disabled=false; }
   const av=$("#me-av"), nm=$("#me-nm"), tier=$("#me-tier"), so=$("#me-signout");
@@ -452,10 +506,14 @@ function initAuth(){
     if(u){ S.user = { uid:u.uid, name:u.displayName || (u.email? u.email.split("@")[0] : "Creator"), email:u.email||"", photo:u.photoURL||"", provider:(u.providerData[0]&&u.providerData[0].providerId)||"firebase" }; }
     else { S.user = null; }
     save(); render();
+    refreshSubscription();   // pull live Pro status for this user (no-op unless billing configured)
   });
 }
 
-function requireAuth(then){ if(S.user){ then&&then(); return true; } pendingAfterAuth=then; openAuth(); return false; }
+// Already signed in → just return true; the caller continues. (Do NOT run `then`
+// here — the caller IS the action, so running it would re-enter and recurse forever.)
+// `then` is only the deferred resume, fired by afterAuth() once a fresh login completes.
+function requireAuth(then){ if(S.user) return true; pendingAfterAuth=then; openAuth(); return false; }
 function afterAuth(name){ closeAuth(); toast("ok","Welcome, "+(name||"creator").split(" ")[0]+"!","You're signed in."); const cb=pendingAfterAuth; pendingAfterAuth=null; render(); cb&&cb(); }
 function authErr(e){ console.error(e); toast("err","Sign-in failed", (e&&e.message)||"Please try again."); }
 
@@ -463,9 +521,9 @@ function openAuth(){
   const m=el(`<div class="scrim-modal" id="authmodal">
     <div class="modal">
       <div class="mclose" onclick="closeAuth()"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
-      <div class="mmark">✦</div>
+      <div class="mmark"><img src="assets/logo.png" alt="Genius logo"/></div>
       <h3>Sign in to Genius</h3>
-      <p>Create AI images & videos right in your browser. Free during alpha.${FB_ENABLED?"":'<br><b style="color:var(--warn)">⚠ Demo mode</b> — Firebase not configured.'}</p>
+      <p>Create AI images & videos right in your browser. Free to start.${FB_ENABLED?"":'<br><b style="color:var(--warn)">⚠ Demo mode</b> — Firebase not configured.'}</p>
       <div class="auth-btns" id="auth-providers">
         <button class="auth-btn" onclick="loginGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-2 3.2-4.8 3.2-7.8z"/><path fill="#34A853" d="M12 23c2.9 0 5.4-1 7.2-2.6l-3.6-2.7c-1 .7-2.3 1-3.6 1-2.8 0-5.1-1.9-6-4.4H2.3v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M6 14.3a6.6 6.6 0 0 1 0-4.2V7.3H2.3a11 11 0 0 0 0 9.8L6 14.3z"/><path fill="#EA4335" d="M12 5.5c1.6 0 3 .5 4.1 1.6l3.1-3.1A11 11 0 0 0 2.3 7.3L6 10.1c.9-2.6 3.2-4.6 6-4.6z"/></svg> Continue with Google</button>
         <button class="auth-btn" onclick="loginApple()"><svg width="16" height="16" viewBox="0 0 384 512" fill="#fff"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM256.6 93c30.3-36 27.6-68.9 26.7-80.7-26.8 1.6-57.8 18.3-75.5 38.9-19.5 22.1-31 49.4-28.5 80.1 29 2.2 55.5-12.7 77.3-38.3z"/></svg> Continue with Apple</button>
@@ -519,6 +577,9 @@ function signOut(){
   else { S.user=null; save(); render(); toast("info","Signed out",""); }
 }
 
+/* API trace — console only (no on-screen popup). Visible in DevTools for debugging. */
+function apiLog(msg, kind){ try{ (kind==="err"?console.warn:console.debug)("[api]",msg); }catch(e){} }
+
 /* =====================================================================
    BACKEND CALL — server-signed web API (the ONE place real wiring lives).
    Each mini-app maps to a workflowId (config.workflows[service.id]). Flow:
@@ -540,6 +601,7 @@ async function callBackend(service, input, onStatus){
 
   // 1) Execute — create the job.
   onStatus("queued","Queued — finding a GPU…");
+  apiLog(`POST /web/execute  workflow=${workflowId.slice(0,8)}…  email=${email}`);
   let runId;
   try{
     const r = await fetch(`${BE.base}/api/v1/web/execute`, {
@@ -548,10 +610,11 @@ async function callBackend(service, input, onStatus){
       body: JSON.stringify({ workflowId, input: buildInput(service, input) }),
     });
     const env = await r.json().catch(()=>({}));
+    apiLog(`← execute HTTP ${r.status}` + (env.data&&env.data.runId?`  runId=${env.data.runId.slice(0,8)}…`:` ${env.message||""}`), r.ok?"ok":"err");
     if(!r.ok) return { ok:false, error: env.message || `Execute failed (HTTP ${r.status}).` };
     runId = (env.data||{}).runId;
     if(!runId) return { ok:false, error:"Backend returned no runId." };
-  }catch(e){ return { ok:false, error:"Network error: "+((e&&e.message)||e) }; }
+  }catch(e){ apiLog(`✕ execute network error: ${(e&&e.message)||e}`,"err"); return { ok:false, error:"Network error: "+((e&&e.message)||e) }; }
 
   // 2) Poll status until terminal (completed / failed / cancelled).
   onStatus("running", service.async ? "Rendering video…" : "Generating…");
@@ -563,10 +626,12 @@ async function callBackend(service, input, onStatus){
       const env = await r.json().catch(()=>({}));
       if(r.ok){
         const d = env.data || {};
+        apiLog(`← status: ${d.status}` + (d.error?`  — ${d.error}`:""), d.status==="failed"||d.status==="cancelled"?"err":"");
         if(d.status==="completed")                        return { ok:true,  output: parseOutput(service, d.output), runId, raw:d };
         if(d.status==="failed" || d.status==="cancelled") return { ok:false, error: d.error || `Generation ${d.status}.`, runId };
         // pending / processing → keep polling
       } else if(r.status!==404){   // a 404 right after execute can be a DB-write race; tolerate until timeout
+        apiLog(`← status HTTP ${r.status}: ${env.message||""}`,"err");
         return { ok:false, error: env.message || `Status check failed (HTTP ${r.status}).`, runId };
       }
     }catch(e){ /* transient network blip — keep polling until timeout */ }
@@ -598,13 +663,14 @@ function mockOutput(service, input){
      step (BE to advise) before their workflow can consume the image. */
 function buildInput(service, raw){
   const PER_SERVICE = {
-    // fal seedream/v4.5/text-to-image. `style` is a UI chip → fold into the prompt
-    // (the workflow has no style field; it's forwarded verbatim so unknown keys are ignored anyway).
+    // fal seedream/v4.5/text-to-image. Aspect ratio + image count come from the
+    // dock controls (raw.ratio = fal imageSize enum, raw.count = number of images);
+    // both default to the previous values so the call is always valid.
     t2i: () => ({
-      prompt: raw.style && raw.style!=="Photoreal" ? `${raw.prompt}, ${raw.style} style` : raw.prompt,
-      imageSize: "square_hd",
-      numImages: 1,
-      max_images: 1,
+      prompt: raw.prompt,
+      imageSize: raw.ratio || "square_hd",   // square_hd | portrait_16_9 | landscape_16_9
+      numImages: raw.count || 1,
+      max_images: raw.count || 1,
       seed: 0,
       syncMode: false,
       enableSafetyChecker: true,
@@ -643,11 +709,14 @@ function parseOutput(service, output){
    or null. Note: cached ~120s server-side, sorted newest-first. */
 async function fetchJobs(page=1, limit=20){
   if(!USE_REAL_BACKEND || !(S.user && S.user.email)) return null;
+  apiLog(`GET /web/jobs?page=${page}&limit=${limit}  email=${S.user.email}`);
   try{
     const r = await fetch(`${BE.base}/api/v1/web/jobs?page=${page}&limit=${limit}`, { headers:{ "x-api-email": S.user.email } });
     const env = await r.json().catch(()=>({}));
-    return r.ok ? (env.data || null) : null;
-  }catch(e){ return null; }
+    const d = r.ok ? (env.data || null) : null;
+    apiLog(`← jobs HTTP ${r.status}` + (d?`  total=${d.total}, items=${(d.items||[]).length}`:`  ${env.message||""}`), r.ok?"ok":"err");
+    return d;
+  }catch(e){ apiLog(`✕ jobs network error: ${(e&&e.message)||e}`,"err"); return null; }
 }
 
 /* ---------- Generation orchestration ---------- */
@@ -665,15 +734,24 @@ function startGeneration(service, input){
     item.status = st==="queued"||st==="running" ? "processing" : item.status;
     if(onPage) renderJobState(label);
   }).then(res=>{
-    if(res.ok){ item.status="success"; item.output=res.output; toast("ok","Your creation is ready ✦", service.name); }
-    else{ item.status="failed"; toast("err","Generation failed", res.error); }
+    if(res.ok){ item.status="success"; item.output=res.output; toast("ok","Your creation is ready ✦", service.name); if(onPage){ render(); } }
+    else{ item.status="failed"; item.error=res.error; toast("err","Generation failed", res.error);
+          if(onPage) renderJobError(res.error); }   // PERSISTENT error in the Result panel (doesn't vanish like a toast)
+    GAL.page=1; GAL.fetchedPage=0;   // a new job exists → next Gallery view refetches page 1
     save();
-    if(onPage) render(); else syncChrome();
+    syncChrome();
   });
 }
 function renderJobState(label){
   const out=$("#svc-out"); if(!out) return;
   out.innerHTML = `<div class="job"><div class="spinner"></div><div class="status">${esc(label)}</div><div class="sub">Result will be saved to your Gallery</div></div>`;
+}
+function renderJobError(msg){
+  const out=$("#svc-out"); if(!out) return;
+  out.innerHTML = `<div class="job" style="color:var(--err)">
+    <svg class="ico" viewBox="0 0 24 24" style="width:34px;height:34px"><path d="M12 9v4m0 4h.01"/><circle cx="12" cy="12" r="9"/></svg>
+    <div class="status">Generation failed</div>
+    <div class="sub" style="max-width:340px;text-align:center;white-space:normal">${esc(msg||"Unknown error")}</div></div>`;
 }
 
 /* =====================================================================
@@ -695,36 +773,21 @@ function render(){
   window.scrollTo(0,0); syncChrome();
 }
 
-/* ---------- HOME ---------- */
+/* ---------- HOME (AI Studio "Explore" layout — feature grid, no media feed) ---------- */
 function viewHome(v){
-  const hero = SERVICES[4]; // i2v sample
   v.innerHTML = `
-    <div class="topbar"><div><h1>Home</h1><div class="sub">Fresh from the Genius community</div></div>
-      <div class="top-right">${planPill()}
-        <button class="btn btn-primary" data-route="#/create">✦ Create</button></div></div>
+    <div class="explore-head">
+      <h2>Explore Genius</h2>
+      <div class="seg"><span class="on">Models</span><span>Agents</span></div>
+    </div>
 
     <div class="prompt-bar">
       <svg class="ico" viewBox="0 0 24 24" style="stroke:var(--tx3)"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg>
-      <input id="home-prompt" placeholder="Describe an image to generate…  e.g. a neon cyberpunk fox, cinematic" />
+      <input id="home-prompt" placeholder="Start typing a prompt to generate an image…" />
       <button class="btn btn-primary" onclick="quickGen()">Generate</button>
     </div>
 
-    <section class="hero">
-      ${media(hero.sample)}<div class="scrim"></div>
-      <div class="inner">
-        <span class="pill-tag">✦ Genius Studio · web</span>
-        <h2>Create AI photos & videos,<br><span class="grad">right in your browser.</span></h2>
-        <p>No app needed. Pick a mini app, add a prompt or photo — your result lands in your gallery. Free during alpha.</p>
-        <div class="hero-cta"><button class="btn btn-primary" data-route="#/create">Browse mini apps</button>
-          <button class="btn btn-ghost" data-route="#/wallet">👑 Go Pro</button></div>
-      </div>
-    </section>
-
-    <div class="row-head"><h3>🧩 Mini Apps</h3><span class="see" data-route="#/create">See all →</span></div>
-    <div class="apps-grid">${SERVICES.slice(0,3).map(appCard).join("")}</div>
-
-    <div class="row-head"><h3>🔥 Trending in the community</h3></div>
-    <div class="feed">${FEED.map(feedTile).join("")}</div>`;
+    <div class="apps-grid">${AVAILABLE().map(appCard).join("")}</div>`;
 }
 function quickGen(){
   const p=$("#home-prompt").value.trim();
@@ -738,22 +801,25 @@ function feedTile(f){
     <span class="kbadge">${f.k}</span>
     <div class="meta"><div class="cap">${esc(f.cap)}</div><span class="svc">${s.emoji} ${esc(s.name)}</span></div></div>`;
 }
+/* AI Studio-style model card: icon tile + name + description (no media thumbnail).
+   Only ever rendered for AVAILABLE (live) services — coming-soon items are filtered out. */
 function appCard(s){
-  const soon=isSoon(s);
-  const act = soon ? `comingSoon('${esc(s.name)}')` : `go('#/app/${s.id}')`;
-  return `<div class="app-card${soon?' soon':''}" onclick="${act}">
-    <div class="thumb">${media(s.sample)}<div class="scrim"></div>${soon?'<span class="soon-badge">Coming soon</span>':''}</div>
-    <div class="body"><h4>${s.emoji} ${esc(s.name)}</h4><p>${esc(s.desc)}</p>
-      <div class="foot"><span class="modality">${esc(s.modality)}</span><span class="cost${soon?' soon-tag':''}">${soon?'M1+':'Free ✦'}</span></div></div></div>`;
+  return `<div class="app-card" onclick="go('#/app/${s.id}')">
+    <div class="ac-icon">${s.emoji}</div>
+    <h4>${esc(s.name)}</h4>
+    <p>${esc(s.desc)}</p>
+    <div class="foot"><span class="modality">${esc(s.modality)}</span><span class="cost">Free ✦</span></div></div>`;
 }
+/* Live services only (M0 = t2i). Keeps the full SERVICES array intact for id lookups. */
+const AVAILABLE = () => SERVICES.filter(s => !isSoon(s));
 function comingSoon(name){ toast("info", name+" — coming soon", "Available after M0. Try AI Image Generator now."); }
 
 /* ---------- CREATE (catalog) ---------- */
 function viewCreate(v){
   v.innerHTML = `
-    <div class="topbar"><div><h1>Create</h1><div class="sub">${M0_SERVICES.length} live now · more coming after M0</div></div>
+    <div class="topbar"><div><h1>Create</h1><div class="sub">${M0_SERVICES.length} model live now</div></div>
       <div class="top-right">${planPill()}</div></div>
-    <div class="apps-grid">${SERVICES.map(appCard).join("")}</div>`;
+    <div class="apps-grid">${AVAILABLE().map(appCard).join("")}</div>`;
 }
 
 /* ---------- SERVICE PAGE (template; M0 ships t2i, reusable for M1 services) ---------- */
@@ -762,57 +828,65 @@ function viewService(v, id){
   const s = svc(id);
   if(!s){ go("#/create"); return; }
   if(isSoon(s)){ comingSoon(s.name); go("#/create"); return; }   // M0: only t2i is live
-  CURRENT_INPUT = { prompt:"", image:null, style:s.styles?s.styles[0]:null };
+  CURRENT_INPUT = { prompt:"", image:null, ratio:"square_hd", count:1, style:null };
   const needsImg = s.input.includes("image");
-  const needsPrompt = s.input.includes("prompt");
+  const isPrompt = s.input==="prompt";
   const recent = S.gallery.filter(g=>g.svc===id && g.status==="success").slice(0,8);
 
   v.innerHTML = `
-    <div class="topbar"><div>
-      <h1>${s.emoji} ${esc(s.name)}</h1>
-      <div class="sub">${esc(s.modality)} · ${esc(s.desc)}</div></div>
-      <div class="top-right">${planPill()}
-        <button class="btn btn-ghost btn-sm" data-route="#/create">← All apps</button></div></div>
-
-    <div class="svc-wrap">
-      <!-- input panel -->
-      <div class="panel">
-        <h4>① Input</h4>
-        ${needsImg ? `<div class="field"><label>Upload a photo</label>
-          <label class="upload" id="up-zone">
-            <input type="file" accept="image/*" id="file-in" hidden onchange="onUpload(event)"/>
-            <svg class="ico" viewBox="0 0 24 24" style="width:30px;height:30px"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-            <div><b>Click to upload</b><div style="font-size:12px;color:var(--tx3)">PNG / JPG · ≥1024px recommended</div></div>
-          </label></div>` : ""}
-        ${needsPrompt || s.input==="prompt" ? `<div class="field"><label>${s.input==="prompt"?"Prompt":"Motion / prompt"}</label>
-          <textarea id="in-prompt" placeholder="${s.input==='prompt'?'A neon cyberpunk fox, cinematic lighting, ultra detailed…':'Describe the motion — e.g. slow zoom, hair in the wind…'}" oninput="CURRENT_INPUT.prompt=this.value"></textarea></div>` : ""}
-        ${s.styles ? `<div class="field"><label>Style</label><div class="chips" id="style-chips">
-          ${s.styles.map((st,i)=>`<span class="chip-opt ${i===0?'sel':''}" onclick="pickStyle(this,'${esc(st)}')">${esc(st)}</span>`).join("")}</div></div>` : ""}
-        <div class="runbar">
-          <span class="costnote">${isPro()? 'Genius <b>Pro</b> · unlimited, no watermark' : 'Free during alpha · <b>Go Pro</b> later for HD & no watermark'}</span>
-          <button class="btn btn-primary" id="run-btn" onclick="runService('${s.id}')">Run</button>
-        </div>
+    <div class="studio">
+      <div class="svc-head">
+        <h1>${s.emoji} ${esc(s.name)}</h1>
+        <div class="top-right">${planPill()}
+          <button class="btn btn-ghost btn-sm" data-route="#/create">← All apps</button></div>
       </div>
 
-      <!-- output panel -->
-      <div class="panel">
-        <h4>② Result</h4>
-        <div class="out ${s.async?'video':''}" id="svc-out">
-          <div class="placeholder"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg>
-            Your result appears here.<br>Saved automatically to Gallery.</div>
-        </div>
-        <div class="out-actions" id="out-actions" style="display:none">
-          <button class="btn btn-ghost btn-sm btn-block" onclick="go('#/gallery')">View in Gallery</button>
-          <button class="btn btn-primary btn-sm btn-block" onclick="runService('${s.id}')">Run again</button>
-        </div>
+      <!-- big result canvas (result shows here, full width, above the dock) -->
+      <div class="canvas ${s.async?'video':''}" id="svc-out">
+        <div class="placeholder"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg>
+          Describe what you want to create.<br>Your result appears here — saved to Gallery.</div>
       </div>
+
+      <div class="out-actions" id="out-actions" style="display:none;max-width:860px;margin:0 auto 8px;width:100%">
+        <button class="btn btn-ghost btn-sm" onclick="go('#/gallery')">View in Gallery</button>
+        <button class="btn btn-primary btn-sm" onclick="runService('${s.id}')">Generate again</button>
+      </div>
+
+      ${recent.length?`<div class="row-head"><h3>Recent on this app</h3></div>
+        <div class="recent">${recent.map(g=>`<div class="r">${media(g.output)}</div>`).join("")}</div>`:""}
     </div>
 
-    ${recent.length?`<div class="row-head"><h3>Recent on this app</h3></div>
-      <div class="recent">${recent.map(g=>`<div class="r">${media(g.output)}</div>`).join("")}</div>`:""}
-
-    <div class="row-head"><h3>✨ Community examples</h3></div>
-    <div class="feed">${FEED.filter(f=>f.svc===id).concat(FEED).slice(0,8).map(feedTile).join("")}</div>`;
+    <!-- fixed bottom prompt dock (Flow / AI Studio style) -->
+    <div class="dock">
+      <div class="dock-inner">
+        <div class="dock-ctls">
+          <span class="ctl static">✦ ${esc(s.modality)}</span>
+          ${isPrompt ? `
+          <span class="ctl-lbl">Ratio</span>
+          <span class="ctl-group" id="ctl-ratio">
+            <span class="ctl on" onclick="pickCtl('ratio','square_hd',this)">1:1</span>
+            <span class="ctl" onclick="pickCtl('ratio','portrait_16_9',this)">9:16</span>
+            <span class="ctl" onclick="pickCtl('ratio','landscape_16_9',this)">16:9</span>
+          </span>
+          <span class="ctl-lbl">Images</span>
+          <span class="ctl-group" id="ctl-count">
+            <span class="ctl on" onclick="pickCtl('count',1,this)">1</span>
+            <span class="ctl" onclick="pickCtl('count',2,this)">2</span>
+            <span class="ctl" onclick="pickCtl('count',4,this)">4</span>
+          </span>` : ""}
+        </div>
+        <div class="dock-row">
+          ${needsImg ? `<label class="dock-up" id="up-zone" title="Upload photo">
+              <input type="file" accept="image/*" id="file-in" hidden onchange="onUpload(event)"/>
+              <svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            </label>` : ""}
+          <textarea id="in-prompt" rows="1" placeholder="${isPrompt?'Describe an image to generate…  e.g. a neon cyberpunk fox, cinematic':'Describe the motion — e.g. slow zoom, hair in the wind…'}" oninput="CURRENT_INPUT.prompt=this.value;autoGrow(this)"></textarea>
+          <button class="send" id="run-btn" onclick="runService('${s.id}')" title="Generate">
+            <svg class="ico" viewBox="0 0 24 24" style="width:20px;height:20px;stroke-width:2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
 
   // restore last successful output preview if exists
   const last = S.gallery.find(g=>g.svc===id && g.status==="success");
@@ -824,13 +898,21 @@ function onUpload(e){
   $("#up-zone").innerHTML=`<img src="${url}" alt="upload"/><div style="font-size:12px;color:var(--tx2)">Click to replace</div><input type="file" accept="image/*" hidden onchange="onUpload(event)"/>`;
 }
 function pickStyle(node,st){ document.querySelectorAll("#style-chips .chip-opt").forEach(c=>c.classList.remove("sel")); node.classList.add("sel"); CURRENT_INPUT.style=st; }
+/* Dock control pills (aspect ratio / image count) — set CURRENT_INPUT[group] = val. */
+function pickCtl(group, val, node){ const g=node.parentElement; g&&g.querySelectorAll(".ctl").forEach(c=>c.classList.remove("on")); node.classList.add("on"); CURRENT_INPUT[group]=val; }
+/* Auto-grow the dock textarea up to its max-height. */
+function autoGrow(el){ el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,140)+"px"; }
 function runService(id){
   const s=svc(id);
+  // Read the prompt straight from the DOM at click time — robust even if the
+  // textarea was filled programmatically (e.g. from the Home quick-gen bar),
+  // which doesn't fire `oninput` and would otherwise leave CURRENT_INPUT.prompt empty.
+  const pEl=$("#in-prompt"); if(pEl) CURRENT_INPUT.prompt = pEl.value;
   if(s.input.includes("image") && !CURRENT_INPUT.image){ toast("info","Upload a photo first","This app needs an input image."); return; }
-  if(s.input==="prompt" && !CURRENT_INPUT.prompt.trim()){ toast("info","Type a prompt first",""); return; }
+  if((s.input==="prompt"||s.input.includes("prompt")) && !(CURRENT_INPUT.prompt||"").trim()){ toast("info","Type a prompt first",""); return; }
   startGeneration(s, {...CURRENT_INPUT});
   renderJobState(s.async?"Queued — finding a GPU…":"Generating…");
-  $("#out-actions").style.display="none";
+  const oa=$("#out-actions"); if(oa) oa.style.display="none";
 }
 function showOutput(out){
   const box=$("#svc-out"); if(!box||!out) return;
@@ -839,40 +921,68 @@ function showOutput(out){
 }
 
 /* ---------- GALLERY ---------- */
+/* ---------- Gallery pagination state (real-backend mode) ----------
+   GAL.page/limit drive GET /web/jobs. We fetch ONLY the current page, once
+   per page (guarded by fetchedPage) — no continuous polling. */
+const GAL = { page:1, limit:12, total:0, items:[], loading:false, fetchedPage:0 };
+function mapJob(it){
+  const s = SERVICES.find(x=>BE.workflows[x.id]===it.workflowId) || svc("t2i");
+  return {
+    id: it.jobId, runId: it.runId, svc: s.id,
+    status: it.status==="completed" ? "success" : (it.status==="failed"||it.status==="cancelled") ? "failed" : "processing",
+    prompt: (it.input&&(it.input.prompt||it.input.positivePrompt))||"",
+    input: it.input||{}, output: it.output ? parseOutput(s, it.output) : null,
+    ts: it.createdAt ? Date.parse(it.createdAt) : 0,
+  };
+}
+async function loadGalleryPage(page){
+  GAL.loading=true; GAL.page=page;
+  if(location.hash==="#/gallery") render();      // show loading state
+  const res = await fetchJobs(page, GAL.limit);
+  GAL.loading=false; GAL.fetchedPage=page;
+  if(res && Array.isArray(res.items)){ GAL.total=res.total||0; GAL.items=res.items.map(mapJob); }
+  if(location.hash==="#/gallery") render();       // guard below prevents a re-fetch loop
+}
+function gotoGalleryPage(p){
+  const maxPage = Math.max(1, Math.ceil((GAL.total||0)/GAL.limit));
+  p = Math.min(Math.max(1,p), maxPage);
+  if(p===GAL.page && GAL.fetchedPage===p) return;
+  GAL.fetchedPage=0;                              // force a fresh fetch for the new page
+  loadGalleryPage(p);
+}
+
 function viewGallery(v){
   if(!S.user){ return emptyState(v,"Gallery","Sign in to see your creations","Your generated images and videos are saved here.",true); }
-  // In real-backend mode, hydrate from GET /api/v1/web/jobs (source of truth across devices).
-  // Render whatever we have locally first, then refresh from the API.
-  if(USE_REAL_BACKEND && BE.bundleId) refreshGalleryFromApi();
+  const real = USE_REAL_BACKEND && BE.bundleId;
+
+  if(real){
+    // Fetch the current page exactly once (no continuous polling). render() re-runs
+    // this function, but fetchedPage===page after the load short-circuits the refetch.
+    if(!GAL.loading && GAL.fetchedPage!==GAL.page){ loadGalleryPage(GAL.page); }
+    if(GAL.loading && !GAL.items.length){
+      return v.innerHTML = `<div class="topbar"><div><h1>Gallery</h1><div class="sub">Loading…</div></div></div>
+        <div class="gal-grid"><div class="proc-fill"><div class="spinner"></div></div></div>`;
+    }
+    if(!GAL.items.length){ return emptyState(v,"Gallery","Nothing here yet","Run a mini app and your results will show up here."); }
+    const maxPage = Math.max(1, Math.ceil(GAL.total/GAL.limit));
+    v.innerHTML = `
+      <div class="topbar"><div><h1>Gallery</h1><div class="sub">${GAL.total} creation${GAL.total>1?'s':''} · page ${GAL.page}/${maxPage}</div></div>
+        <div class="top-right"><button class="btn btn-primary" data-route="#/create">✦ Create</button></div></div>
+      <div class="gal-grid">${GAL.items.map(galCard).join("")}</div>
+      <div class="pager" style="display:flex;gap:10px;justify-content:center;align-items:center;margin:22px 0">
+        <button class="btn btn-ghost btn-sm" ${GAL.page<=1||GAL.loading?'disabled':''} onclick="gotoGalleryPage(${GAL.page-1})">← Prev</button>
+        <span class="sub" style="margin:0">${GAL.page} / ${maxPage}</span>
+        <button class="btn btn-ghost btn-sm" ${GAL.page>=maxPage||GAL.loading?'disabled':''} onclick="gotoGalleryPage(${GAL.page+1})">Next →</button>
+      </div>`;
+    return;
+  }
+
+  // Mock / offline mode: local gallery, no pagination.
   if(!S.gallery.length){ return emptyState(v,"Gallery","Nothing here yet","Run a mini app and your results will show up here."); }
   v.innerHTML = `
     <div class="topbar"><div><h1>Gallery</h1><div class="sub">${S.gallery.length} creation${S.gallery.length>1?'s':''}</div></div>
       <div class="top-right"><button class="btn btn-primary" data-route="#/create">✦ Create</button></div></div>
     <div class="gal-grid">${S.gallery.map(galCard).join("")}</div>`;
-}
-
-/* Pull the user's jobs from the API and merge into S.gallery, then re-render. */
-let _galleryLoading=false;
-async function refreshGalleryFromApi(){
-  if(_galleryLoading) return; _galleryLoading=true;
-  const res = await fetchJobs(1, 50);
-  _galleryLoading=false;
-  if(!res || !Array.isArray(res.items)) return;
-  const byRun = new Map(S.gallery.filter(g=>g.runId).map(g=>[g.runId,g]));
-  for(const it of res.items){
-    const s = SERVICES.find(x=>BE.workflows[x.id]===it.workflowId) || svc("t2i");
-    const mapped = {
-      id: it.jobId, runId: it.runId, svc: s.id,
-      status: it.status==="completed" ? "success" : (it.status==="failed"||it.status==="cancelled") ? "failed" : "processing",
-      prompt: (it.input&&(it.input.prompt||it.input.positivePrompt))||"",
-      input: it.input||{}, output: it.output ? parseOutput(s, it.output) : null,
-      ts: it.createdAt ? Date.parse(it.createdAt) : Date.now(),
-    };
-    const existing = byRun.get(it.runId);
-    if(existing) Object.assign(existing, mapped); else S.gallery.unshift(mapped);
-  }
-  S.gallery.sort((a,b)=>b.ts-a.ts); save();
-  if(location.hash==="#/gallery") render();
 }
 function galCard(g){
   const s=svc(g.svc);
@@ -892,8 +1002,8 @@ function viewWallet(v){
          <div><h4 style="margin:0">👑 Genius Pro · active</h4><div class="sub" style="margin-top:4px">Unlimited generations, HD, no watermark. Manage billing in account.</div></div>
          <button class="btn btn-ghost btn-sm" onclick="cancelPro()">Cancel</button></div>`
     : `<div class="panel" style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px">
-         <div><h4 style="margin:0">Free plan</h4><div class="sub" style="margin-top:4px">Everything is <b>free during alpha</b> — no credits, no limits. Go Pro later for HD & no watermark.</div></div>
-         <span class="credit-pill"><span class="dot"></span>Free · alpha</span></div>`;
+         <div><h4 style="margin:0">Free plan</h4><div class="sub" style="margin-top:4px">Generation is <b>free</b> — no credits, ever. Go Pro for HD, no watermark & priority queue.</div></div>
+         <span class="credit-pill"><span class="dot"></span>Free plan</span></div>`;
   const acctRow = S.user
     ? `<div class="panel" style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
          <div class="av" style="width:38px;height:38px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:800">${esc(S.user.name[0].toUpperCase())}</div>
@@ -907,7 +1017,7 @@ function viewWallet(v){
       <div class="top-right">${planPill()}</div></div>
     ${acctRow}
     ${planRow}
-    <div class="row-head"><h3>👑 Go Pro</h3><span class="see" style="color:var(--tx3)">Prices indicative — finalized at M1</span></div>
+    <div class="row-head"><h3>👑 Go Pro</h3><span class="see" style="color:var(--tx3)">Cancel anytime</span></div>
     <p style="color:var(--tx2);font-size:13.5px;margin-bottom:14px">${PRO_PERKS.map(p=>"✓ "+p).join("  ·  ")}</p>
     <div class="packs">${PLANS.map(planCard).join("")}</div>
     <div class="row-head"><h3>🧾 Activity</h3></div>
@@ -926,13 +1036,56 @@ function activityRow(a){
     <div class="td"><div class="t">${esc(a.t)}</div><div class="d">${esc(a.d)}</div></div></div>`;
 }
 function logActivity(t,d,icon){ S.activity.unshift({t,d,icon:icon||"👑"}); }
-function subscribe(id){
-  if(!requireAuth(()=>subscribe(id))) return;
-  const p=PLANS.find(x=>x.id===id);
-  // M1: real Stripe subscription Checkout → webhook flips plan to "pro". M0: mock instant.
-  S.plan="pro"; logActivity(p.nm+" subscription", "Started "+p.usd+"/"+p.per+" (mock — Stripe sub at M1)","👑");
+function subscribe(id){ startCheckout(id); }
+
+/* PRODUCTION-READY checkout. When billing is configured (CONFIG.billing.useRealCheckout
+   + a whitelisted bundleId + signed-in user), POST to BE to create a provider-hosted
+   Checkout session and redirect the browser to it. BE owns the payment provider + secret
+   keys; the browser only sends identity headers. Unconfigured → local mock so it still demos. */
+async function startCheckout(id){
+  if(!requireAuth(()=>startCheckout(id))) return;
+  const p = PLANS.find(x=>x.id===id); if(!p) return;
+
+  if(BILLING.enabled && BE.bundleId && S.user && S.user.email){
+    toast("info","Opening secure checkout…", p.nm);
+    try{
+      const r = await fetch(`${BE.base}${BILLING.createSessionPath}`, {
+        method:"POST",
+        headers:{ "x-api-bundleid":BE.bundleId, "x-api-email":S.user.email, "Content-Type":"application/json" },
+        body: JSON.stringify({ planId:id, priceId: BILLING.prices[id] || undefined, successUrl: BILLING.successUrl, cancelUrl: BILLING.cancelUrl }),
+      });
+      const env = await r.json().catch(()=>({}));
+      const url = (env.data && env.data.url) || env.url;
+      if(r.ok && url){ window.location.href = url; return; }   // → provider-hosted checkout page
+      toast("err","Couldn't start checkout", env.message || `HTTP ${r.status}`);
+    }catch(e){ toast("err","Checkout error", (e&&e.message)||"Network error"); }
+    return;
+  }
+
+  // MOCK PATH — billing not wired yet: flip locally so the subscribe flow demos end-to-end.
+  S.plan="pro"; logActivity(p.nm+" subscription", "Started "+p.usd+"/"+p.per+(BILLING.enabled?"":" (demo — connect billing to charge)"),"👑");
   save(); render();
-  toast("ok","Welcome to Genius Pro 👑","Unlimited unlocked. (Mock — Stripe at M1)");
+  toast("ok","Welcome to Genius Pro 👑","Unlimited unlocked."+(BILLING.enabled?"":" (Demo — wire billing to charge.)"));
+}
+
+/* Pull live subscription status from BE (after login or after returning from checkout). */
+async function refreshSubscription(){
+  if(!(BILLING.enabled && BE.bundleId && S.user && S.user.email)) return;
+  try{
+    const r = await fetch(`${BE.base}${BILLING.statusPath}`, { headers:{ "x-api-bundleid":BE.bundleId, "x-api-email":S.user.email } });
+    const env = await r.json().catch(()=>({}));
+    const d = env.data || env;
+    if(r.ok && d && typeof d.active==="boolean"){ S.plan = d.active ? "pro" : "free"; save(); syncChrome(); }
+  }catch(e){ /* non-fatal */ }
+}
+
+/* Handle the provider redirect back (?billing=success|cancel). */
+function handleBillingReturn(){
+  const q = new URLSearchParams(location.search);
+  const b = q.get("billing");
+  if(b==="success"){ toast("ok","Payment received 👑","Activating Genius Pro…"); refreshSubscription(); }
+  else if(b==="cancel"){ toast("info","Checkout cancelled",""); }
+  if(b){ try{ history.replaceState(null,"", location.pathname + location.hash); }catch(e){} }
 }
 function cancelPro(){ S.plan="free"; logActivity("Genius Pro cancelled","Back to Free plan","✕"); save(); render(); toast("info","Pro cancelled","You're back on the Free plan."); }
 
@@ -978,6 +1131,7 @@ function emptyState(v,title,head,sub,auth){
 
 /* ---------- boot ---------- */
 initAuth();
+handleBillingReturn();    // handle ?billing=success|cancel redirect from the payment provider
 render(); syncChrome();
 </script>
 </body>

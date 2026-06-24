@@ -14,9 +14,9 @@
      NEXT_PUBLIC_BE_BASE, NEXT_PUBLIC_BUNDLE_ID, NEXT_PUBLIC_WORKFLOW_*  (all client-safe)
    ───────────────────────────────────────────────────────────────────────── */
 window.CONFIG = {
-  useRealBackend: true,                               // t2i wired; needs bundleId below to actually run
+  useRealBackend: false,                              // flip true once bundleId is whitelisted + workflowIds are filled
   beBase: "https://api-ai-genius-iip055.aperogroup.ai", // web API base (IIP055). dev/prod per BE.
-  bundleId: "aiphotogenerator.aifaceeditor.aivideogenerator.aibeauty.web", // whitelisted by BE; resolves the signing key server-side
+  bundleId: "",                                       // <-- whitelisted by BE; resolves the signing key server-side
 
   // Map each mini-app service id → its workflowId on the workflow service.
   // Fill these in as BE sends them. A service with no id here falls back to mock.
@@ -36,27 +36,26 @@ window.CONFIG = {
   // Project settings → Your apps → Web app → SDK setup. Leave blank = demo/mock mode.
   // Setup steps: see firebase-setup.md
   firebase: {
-    // Firebase project iip055-genius, web app "test-noti-web". Web config is
-    // CLIENT-SAFE (public by design; secured by Authorized Domains + rules).
-    // ⚠ Add localhost + hoattv-ctrl.github.io to Auth → Settings → Authorized domains.
-    apiKey: "AIzaSyAAP0F3fVHjjf5-u8n0slwvo8MZFLaHsFg",
-    authDomain: "iip055-genius.firebaseapp.com",
-    projectId: "iip055-genius",
-    appId: "1:965419273267:web:19471f4a6e57d48db0e746",
-    messagingSenderId: "965419273267",
-    storageBucket: "iip055-genius.firebasestorage.app",
-    measurementId: "G-YDSMGWP07G"
+    apiKey: "",
+    authDomain: "",          // e.g. genius-web.firebaseapp.com  (add app.genius.aperogroup.io to Authorized domains)
+    projectId: "",
+    appId: "",
+    // messagingSenderId, storageBucket — optional for auth-only
   },
 
-  // Billing — Genius Pro subscription. Flip useRealCheckout=true + fill prices once
-  // BE provides the checkout/status endpoints (see config.example.js for the contract).
-  // Left false → subscribe() flips plan locally (demo) so the flow works before billing is wired.
+  // Billing — Genius Pro subscription (CLIENT-SAFE: only price ids + redirect urls).
+  // The payment provider (Stripe/etc.) + secret keys live on BE. To SELL for real,
+  // flip useRealCheckout=true, fill the prices map, and stand up two BE endpoints:
+  //   POST {createSessionPath}  body {planId, priceId, successUrl, cancelUrl} → { url }  (provider-hosted Checkout)
+  //   GET  {statusPath}         → { active: boolean }                                    (current subscription)
+  // Both authenticated by the same identity headers as the AI API (x-api-bundleid + x-api-email).
+  // Left false = local mock (subscribe flips plan locally so the flow still demos).
   billing: {
     useRealCheckout: false,
     createSessionPath: "/api/v1/web/billing/checkout",
     statusPath: "/api/v1/web/billing/status",
-    prices: { weekly: "", monthly: "", yearly: "" },
-    successUrl: "",
-    cancelUrl: ""
+    prices: { weekly: "", monthly: "", yearly: "" },   // planId → provider price id (e.g. Stripe price_xxx)
+    successUrl: "",   // default: current page + ?billing=success
+    cancelUrl: ""     // default: current page + ?billing=cancel
   }
 };
