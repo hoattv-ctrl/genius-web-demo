@@ -28,17 +28,17 @@
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
 <style>
   :root{
-    /* ===== Dark theme — Google AI Studio inspired ===== */
-    --bg:#131314; --sidebar:#1b1c1d; --card:#1e1f20; --card-2:#26282a; --surface-3:#2f3133;
-    --hairline:rgba(255,255,255,.10);
-    --tx:#e8eaed; --tx2:#9aa0a6; --tx3:#6e7681;
-    --surf2:#26282a;
-    --primary:#b794f6; --primary-2:#a37bf2;
-    --grad:linear-gradient(135deg,#B14DFF 0%,#7A2BF6 100%);
-    --glow:none;
-    --shadow-hover:0 1px 0 rgba(255,255,255,.04);
-    --tint:rgba(183,148,246,.14);
-    --tint-2:rgba(183,148,246,.30);
+    /* ===== Dark theme — Genius mockup (near-black + violet gradient) ===== */
+    --bg:#09080c; --sidebar:#0b0a0f; --card:#15131c; --card-2:#1c1925; --surface-3:#272233;
+    --hairline:rgba(255,255,255,.08);
+    --tx:#f3f1f7; --tx2:#9b94a8; --tx3:#6a6478;
+    --surf2:#1c1925;
+    --primary:#9b5cff; --primary-2:#8a42f5;
+    --grad:linear-gradient(135deg,#A855F7 0%,#7C3AED 100%);
+    --glow:0 0 0 1px rgba(155,92,255,.0);
+    --shadow-hover:0 8px 30px rgba(124,58,237,.18);
+    --tint:rgba(155,92,255,.14);
+    --tint-2:rgba(155,92,255,.34);
     --ok:#5bd6a0; --warn:#f5c451; --err:#f2849e;
     --r:12px; --r-lg:16px; --pill:999px;
     --font:"Satoshi",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
@@ -54,8 +54,8 @@
 
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:14px;cursor:pointer;border:none;padding:9px 18px;border-radius:var(--pill);transition:background .15s,border-color .15s,opacity .15s;letter-spacing:-.1px}
   .btn:disabled{opacity:.45;cursor:not-allowed}
-  .btn-primary{background:var(--primary);color:#1a1024}
-  .btn-primary:not(:disabled):hover{background:var(--primary-2)}
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 6px 20px rgba(124,58,237,.32)}
+  .btn-primary:not(:disabled):hover{filter:brightness(1.08);box-shadow:0 8px 26px rgba(124,58,237,.45)}
   .btn-ghost{background:transparent;color:var(--tx);border:1px solid var(--hairline)}
   .btn-ghost:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2)}
   .btn-sm{padding:7px 14px;font-size:13px}
@@ -183,7 +183,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .job .status{font-weight:700;font-size:14px;color:var(--tx)}
   .job .sub{font-size:12.5px}
-  .out-actions{display:flex;gap:10px;margin-top:14px}
+  .out-actions{display:flex;gap:10px;margin-top:14px;justify-content:center}
 
   /* recent strip */
   .recent{display:grid;grid-auto-flow:column;grid-auto-columns:120px;gap:12px;overflow-x:auto;padding-bottom:6px}
@@ -273,8 +273,19 @@
   .studio{position:relative;display:flex;flex-direction:column;min-height:calc(100vh - 120px);padding-bottom:180px}
   .studio .svc-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
   .studio .svc-head h1{font-size:20px;font-weight:600;letter-spacing:-.4px;display:flex;align-items:center;gap:9px;color:var(--tx)}
-  .canvas{flex:1;min-height:46vh;border-radius:var(--r-lg);background:var(--card);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:18px;margin-bottom:14px}
-  .canvas img,.canvas video{max-width:100%;max-height:66vh;border-radius:var(--r);object-fit:contain}
+  .canvas{position:relative;flex:1;min-height:46vh;border-radius:var(--r-lg);background:var(--card);border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:0;margin-bottom:14px}
+  .report-flag{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:9px;background:rgba(10,8,14,.5);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;color:#9aa0a6;cursor:pointer;z-index:3;transition:.12s}
+  .report-flag:hover{color:#fff;background:rgba(10,8,14,.7)}
+  .edit-hint{position:absolute;bottom:12px;right:12px;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:var(--pill);background:rgba(10,8,14,.55);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);color:#fff;cursor:pointer;z-index:3;transition:.12s}
+  .edit-hint:hover{background:var(--grad);border-color:transparent}
+  .edit-base{align-items:center;gap:10px;margin:0 4px 10px;padding:6px 6px 6px 8px;background:var(--tint);border:1px solid var(--tint-2);border-radius:12px;width:fit-content}
+  .edit-base img{width:34px;height:34px;border-radius:8px;object-fit:cover}
+  .edit-base .eb-lbl{font-size:12.5px;font-weight:600;color:#d8c4ff}
+  .edit-base .eb-x{width:24px;height:24px;border-radius:7px;border:none;background:rgba(255,255,255,.08);color:var(--tx2);cursor:pointer;display:grid;place-items:center}
+  .edit-base .eb-x:hover{color:#fff;background:rgba(255,255,255,.16)}
+  /* result fills the whole frame edge-to-edge (no gray margin) */
+  .canvas img,.canvas video{width:100%;height:100%;object-fit:cover}
+  .canvas .placeholder{padding:18px}
   .canvas .placeholder{color:var(--tx3);font-size:14px;line-height:1.6}
   .canvas .placeholder .ico{width:44px;height:44px;margin:0 auto 12px;stroke:var(--tx3)}
   .canvas .job{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--tx2)}
@@ -300,6 +311,221 @@
   .dock-up{width:38px;height:38px;flex:none;border-radius:11px;border:1px solid var(--hairline);background:var(--card-2);display:grid;place-items:center;cursor:pointer;color:var(--tx2);overflow:hidden}
   .dock-up:hover{color:var(--tx);border-color:rgba(255,255,255,.2)}
   .dock-up img{width:100%;height:100%;object-fit:cover}
+
+  /* ===== Welcome / intro (full-screen marketing landing — matches design) ===== */
+  body.welcome-mode .sidebar{display:none}
+  body.welcome-mode .main{padding:0;max-width:none;margin:0}
+  .welcome{min-height:100vh;overflow:hidden;background:radial-gradient(90% 60% at 50% 0%,rgba(124,58,237,.16),transparent 60%),var(--bg)}
+  .wl-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px}
+  .wl-nav-left{display:flex;align-items:center;gap:34px}
+  .wl-nav .brand{padding:0}
+  .wl-about{font-size:14.5px;font-weight:500;color:var(--tx2);cursor:pointer}
+  .wl-about:hover{color:var(--tx)}
+  .wl-nav-right{display:flex;align-items:center;gap:10px}
+  .wl-main{max-width:1000px;margin:0 auto;padding:30px 24px 0;text-align:center}
+  .wl-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#d8c4ff;padding:8px 16px;border-radius:var(--pill);border:1px solid var(--tint-2);background:var(--tint);margin-bottom:22px}
+  .wl-h1{position:relative;display:inline-block;font-size:clamp(40px,5.6vw,68px);font-weight:800;line-height:1.04;letter-spacing:-2px;color:var(--tx);margin-bottom:18px}
+  .wl-h1 .grad{background:linear-gradient(100deg,#b07bff 0%,#7C3AED 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .wl-spark{position:absolute;right:-26px;top:42%;color:var(--primary);font-size:26px}
+  .wl-sub{color:var(--tx2);font-size:16.5px;line-height:1.6;margin-bottom:28px}
+  .wl-cta-btn{padding:14px 26px;font-size:16px;border-radius:var(--pill)}
+  .wl-feats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:920px;margin:44px auto 0;text-align:left}
+  @media(max-width:820px){.wl-feats{grid-template-columns:repeat(2,1fr)}}
+  .wl-feat{display:flex;gap:11px;padding:0 6px;border-left:1px solid var(--hairline)}
+  .wl-feat:first-child{border-left:none}
+  .wl-feat-ico{color:var(--primary);flex:none;margin-top:1px}
+  .wl-feat-ico .ico{width:20px;height:20px}
+  .wl-feat-t{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:5px}
+  .wl-feat-d{font-size:12.5px;color:var(--tx2);line-height:1.5}
+  /* fanned gallery */
+  .wl-gallery{display:flex;align-items:flex-end;justify-content:center;gap:0;margin-top:44px;padding-bottom:10px;height:340px}
+  /* TWO LAYERS:
+     .wl-g (outer slot) = fan position (rotate + entrance animation). Hover does NOT touch
+       this transform, so cards never fly back to center.
+     .wl-card (inner) = hover layer only (lift + scale + counter-rotate to straighten). */
+  .wl-g{flex:none;cursor:pointer;transform-origin:bottom center}
+  .wl-card{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;border:1px solid var(--hairline);box-shadow:0 18px 50px rgba(0,0,0,.55);transition:transform .45s cubic-bezier(.22,1,.36,1),filter .3s ease,box-shadow .3s ease,opacity .3s ease;will-change:transform,filter}
+  .wl-card img{width:100%;height:100%;object-fit:cover;display:block}
+  /* Fan-out on load: cards start stacked & collapsed at center, then spread into a fan
+     with a staggered delay (center first → outward) — "opening a deck of cards". */
+  .wl-g1{width:175px;height:240px;z-index:1;margin-right:-26px;animation:wlFan1 .8s cubic-bezier(.2,.85,.3,1) .30s both}
+  .wl-g2{width:200px;height:280px;z-index:2;margin-right:-22px;animation:wlFan2 .8s cubic-bezier(.2,.85,.3,1) .16s both}
+  .wl-g3{width:430px;height:320px;z-index:4;animation:wlFan3 .7s cubic-bezier(.2,.85,.3,1) 0s both}
+  .wl-g3 .wl-card{box-shadow:0 0 0 1px var(--tint-2),0 24px 60px rgba(124,58,237,.35)}
+  .wl-g4{width:200px;height:280px;z-index:2;margin-left:-22px;animation:wlFan4 .8s cubic-bezier(.2,.85,.3,1) .16s both}
+  .wl-g5{width:165px;height:240px;z-index:1;margin-left:-26px;animation:wlFan5 .8s cubic-bezier(.2,.85,.3,1) .30s both}
+  @keyframes wlFan1{from{transform:translateX(235px) translateY(0) rotate(0) scale(.78);opacity:0}to{transform:rotate(-9deg) translateY(34px);opacity:1}}
+  @keyframes wlFan2{from{transform:translateX(120px) translateY(0) rotate(0) scale(.82);opacity:0}to{transform:rotate(-5deg) translateY(14px);opacity:1}}
+  @keyframes wlFan3{from{transform:translateY(20px) scale(.9);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+  @keyframes wlFan4{from{transform:translateX(-120px) translateY(0) rotate(0) scale(.82);opacity:0}to{transform:rotate(5deg) translateY(14px);opacity:1}}
+  @keyframes wlFan5{from{transform:translateX(-235px) translateY(0) rotate(0) scale(.78);opacity:0}to{transform:rotate(9deg) translateY(34px);opacity:1}}
+  /* HOVER: hovered card lifts ~42px, straightens (counter-rotates the fan angle), scales,
+     glows + brighter; others dim. Only transform/filter/opacity/box-shadow animate. */
+  .wl-g:hover{z-index:10}
+  .wl-g1 .wl-card:hover{transform:rotate(9deg) translateY(-42px) scale(1.12)}
+  .wl-g2 .wl-card:hover{transform:rotate(5deg) translateY(-42px) scale(1.12)}
+  .wl-g3 .wl-card:hover{transform:translateY(-42px) scale(1.12)}
+  .wl-g4 .wl-card:hover{transform:rotate(-5deg) translateY(-42px) scale(1.12)}
+  .wl-g5 .wl-card:hover{transform:rotate(-9deg) translateY(-42px) scale(1.12)}
+  .wl-card:hover{filter:brightness(1.1);box-shadow:0 0 0 1px var(--tint-2),0 30px 72px rgba(124,58,237,.55)}
+  .wl-gallery:has(.wl-card:hover) .wl-card:not(:hover){opacity:.55;filter:brightness(.7)}
+  @media(prefers-reduced-motion:reduce){
+    .wl-g1,.wl-g2,.wl-g3,.wl-g4,.wl-g5{animation:none}
+    .wl-g1{transform:rotate(-9deg) translateY(34px)}.wl-g2{transform:rotate(-5deg) translateY(14px)}.wl-g4{transform:rotate(5deg) translateY(14px)}.wl-g5{transform:rotate(9deg) translateY(34px)}
+    .wl-card{transition:filter .3s ease,box-shadow .3s ease,opacity .3s ease}
+    .wl-g1 .wl-card:hover,.wl-g2 .wl-card:hover,.wl-g3 .wl-card:hover,.wl-g4 .wl-card:hover,.wl-g5 .wl-card:hover{transform:none}
+  }
+  @media(max-width:760px){.wl-gallery{display:none}.wl-nav{padding:16px 20px}.wl-about{display:none}}
+
+  /* ===== Paywall — "Pick your plan" (matches design) ===== */
+  .modal.pw{max-width:460px;text-align:center;padding:24px 26px 22px;background:radial-gradient(120% 70% at 50% -5%,rgba(124,58,237,.22),transparent 60%),var(--card)}
+  .pw-diamond{width:64px;height:64px;margin:8px auto 14px;border-radius:16px;overflow:hidden;display:grid;place-items:center;box-shadow:0 8px 28px rgba(124,58,237,.4)}
+  .pw-diamond img{width:100%;height:100%;object-fit:cover}
+  .pw-title{font-size:26px;font-weight:800;margin-bottom:20px;color:var(--tx)}
+  .pw-bullets{list-style:none;display:flex;flex-direction:column;gap:11px;text-align:left;margin:0 auto 18px;max-width:330px}
+  .pw-bullets li{display:flex;align-items:center;gap:11px;font-size:14.5px;color:var(--tx)}
+  .pw-check{width:22px;height:22px;flex:none;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff}
+  .pw-rating{margin:6px 0 18px}
+  .pw-rating-num{font-size:14px;font-weight:600;color:var(--tx)}
+  .pw-stars{color:#f5b301;font-size:18px;letter-spacing:2px;margin:2px 0}
+  .pw-rating-sub{font-size:13px;color:var(--tx2)}
+  .pw-plans{display:flex;flex-direction:column;gap:11px;margin-bottom:16px}
+  .pw-plan{position:relative;display:flex;align-items:center;gap:12px;padding:16px 18px;border:1.5px solid var(--hairline);border-radius:16px;cursor:pointer;transition:.12s;background:var(--card-2);text-align:left}
+  .pw-plan:hover{border-color:rgba(255,255,255,.22)}
+  .pw-plan.sel{border-color:var(--primary)}
+  .pw-radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--tx3);flex:none;position:relative}
+  .pw-plan.sel .pw-radio{border-color:var(--primary);background:var(--primary)}
+  .pw-plan.sel .pw-radio::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800}
+  .pw-plan-nm{flex:1;font-weight:700;font-size:16px;color:var(--tx)}
+  .pw-plan-pr{font-weight:800;font-size:18px;color:var(--tx)}
+  .pw-tag{position:absolute;top:-11px;right:16px;font-size:11px;font-weight:800;padding:3px 12px;border-radius:var(--pill);background:var(--grad);color:#fff}
+  .pw-continue{padding:15px;font-size:16px;border-radius:var(--pill)}
+  .pw-links{display:flex;justify-content:center;gap:22px;margin-top:16px}
+  .pw-links span{font-size:13px;color:var(--tx2);cursor:pointer}
+  .pw-links span:hover{color:var(--tx)}
+
+  /* ===== Sidebar — mockup (AI Tools group + Go Pro card) ===== */
+  .nav a{cursor:pointer}
+  .nav a.active{background:var(--grad);color:#fff;font-weight:600;box-shadow:0 6px 18px rgba(124,58,237,.3)}
+  .nav a.active .ico{stroke:#fff}
+  .badge.new{background:var(--tint);color:#cbb3ff;border:1px solid var(--tint-2);font-weight:700}
+  .gopro-card{margin-top:auto;background:linear-gradient(160deg,rgba(124,58,237,.16),rgba(124,58,237,.04));border:1px solid var(--tint-2);border-radius:var(--r-lg);padding:15px}
+  .gopro-card .gp-h{font-weight:700;font-size:14px;color:#e9d9ff;display:flex;align-items:center;gap:7px;margin-bottom:6px}
+  .gopro-card p{font-size:12px;color:var(--tx2);line-height:1.5;margin-bottom:12px}
+
+  /* ===== Home topbar (Pricing · ⚡ · Go Pro · avatar) ===== */
+  .home-top h1{font-size:20px}
+  .link-lite{font-size:14px;color:var(--tx2);cursor:pointer;font-weight:500}
+  .link-lite:hover{color:var(--tx)}
+  .icon-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--hairline);background:var(--card-2);color:var(--primary);display:grid;place-items:center;cursor:pointer}
+  .icon-btn:hover{border-color:var(--tint-2)}
+  .av-top{width:34px;height:34px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px;cursor:pointer}
+
+  /* ===== Home hero + create box ===== */
+  .home-wrap{max-width:1180px;margin:0 auto}
+  .home-hero{text-align:center;font-size:clamp(26px,3.4vw,40px);font-weight:800;letter-spacing:-1px;margin:30px 0 26px;color:var(--tx)}
+  .home-hero .spark{color:var(--primary);font-size:.6em;vertical-align:super;margin-left:4px}
+  .cbox{max-width:920px;margin:0 auto 40px;background:var(--card);border:1px solid var(--tint-2);border-radius:22px;padding:18px 20px;box-shadow:0 0 0 4px rgba(124,58,237,.08),0 18px 50px rgba(0,0,0,.5)}
+  .cbox-input{width:100%;background:none;border:none;color:var(--tx);font-family:inherit;font-size:16px;outline:none;resize:none;min-height:28px;max-height:160px;line-height:1.5;margin-bottom:14px}
+  .cbox-input::placeholder{color:#7a6f90}
+  .cbox-ctls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .seg2{display:inline-flex;gap:3px;padding:3px;background:var(--card-2);border:1px solid var(--hairline);border-radius:var(--pill)}
+  .seg2-b{width:34px;height:30px;border-radius:var(--pill);display:grid;place-items:center;color:var(--tx2);cursor:pointer}
+  .seg2-b.on{background:#fff;color:#15131c}
+  .model-pill{cursor:pointer}
+  .stepper{display:inline-flex;align-items:center;gap:4px;background:var(--card-2);border:1px solid var(--hairline);border-radius:var(--pill);padding:3px}
+  .stepper button{width:26px;height:26px;border-radius:50%;border:none;background:none;color:var(--tx2);font-size:16px;cursor:pointer;display:grid;place-items:center}
+  .stepper button:hover{background:var(--surface-3);color:var(--tx)}
+  .stepper span{min-width:18px;text-align:center;font-size:13px;font-weight:700;color:var(--tx)}
+  .cbox-go{margin-left:auto}
+
+  /* ===== Home cards row ===== */
+  .home-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:1100px){.home-cards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.home-cards{grid-template-columns:1fr}}
+  .hc{position:relative;border-radius:var(--r-lg);overflow:hidden;cursor:pointer;aspect-ratio:3/4;border:1px solid var(--hairline);background:var(--card-2);transition:transform .18s,border-color .18s,box-shadow .18s}
+  .hc:hover{transform:translateY(-3px);border-color:var(--tint-2);box-shadow:var(--shadow-hover)}
+  .hc img,.hc video{width:100%;height:100%;object-fit:cover}
+  .hc-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent 45%)}
+  .hc-type{position:absolute;top:10px;left:10px;width:30px;height:30px;border-radius:9px;background:rgba(10,8,14,.55);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;color:#fff;z-index:2}
+  .hc-type .ico{width:16px;height:16px}
+  .hc-badge{position:absolute;left:10px;bottom:10px;font-size:13px;font-weight:700;color:#fff;background:rgba(10,8,14,.55);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);padding:4px 11px;border-radius:var(--pill);z-index:2}
+  .home-more{display:flex;justify-content:center;margin:28px 0 10px}
+  .home-more .btn{border-radius:var(--pill);padding:11px 22px}
+
+  /* ===== Liquid glass (frosted translucent) ===== */
+  .cbox{background:rgba(24,20,34,.55);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border-color:rgba(155,92,255,.45);box-shadow:0 0 0 4px rgba(124,58,237,.10),0 0 40px rgba(124,58,237,.18) inset,0 18px 50px rgba(0,0,0,.5)}
+  .seg2,.ctl,.stepper,.model-pill{background:rgba(255,255,255,.06);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);border-color:rgba(255,255,255,.12)}
+  .icon-btn,.av-top{backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%)}
+  .icon-btn{background:rgba(255,255,255,.06)}
+
+  /* ===== Home prompt box — focus glow, placeholder fade, Generate button ===== */
+  .cbox{transition:border-color .3s cubic-bezier(.22,1,.36,1),box-shadow .3s cubic-bezier(.22,1,.36,1)}
+  .cbox:focus-within{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,58,237,.22),0 0 58px rgba(124,58,237,.42),0 18px 50px rgba(0,0,0,.5)}
+  .cbox-input::placeholder{transition:opacity .42s cubic-bezier(.22,1,.36,1)}
+  .cbox-input.ph-hide::placeholder{opacity:0}
+  .cbox-go{transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease,filter .2s ease}
+  .cbox-go:hover{transform:scale(1.03);box-shadow:0 10px 30px rgba(124,58,237,.55)}
+  .cbox-go:active{transform:scale(.98)}
+  .cbox-go .ico{transition:transform .3s cubic-bezier(.22,1,.36,1)}
+  .cbox-go.gen-loading{pointer-events:none}
+  .cbox-go.gen-loading .ico{animation:genSpin .8s linear infinite}
+  @keyframes genSpin{to{transform:rotate(360deg)}}
+  @media(prefers-reduced-motion:reduce){
+    .cbox-input::placeholder{transition:none}
+    .cbox-go:hover{transform:none}
+    .cbox-go.gen-loading .ico{animation:none}
+    .cbox{transition:box-shadow .2s ease}
+  }
+  .gopro-card{backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%)}
+  /* glass card hover sheen */
+  .hc{box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .hc img{transition:transform .35s ease}
+  .hc:hover img{transform:scale(1.04)}
+
+  /* ===== Dock image/video toggle (above prompt) ===== */
+  .dock-toggle{display:flex;justify-content:flex-start;margin:0 4px 10px}
+
+  /* ===== Explore ===== */
+  .exp-wrap{max-width:1320px;margin:0 auto;padding-bottom:170px}
+  .exp-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 20px}
+  .exp-tab{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;padding:8px 15px;border-radius:var(--pill);color:var(--tx2);cursor:pointer;background:rgba(255,255,255,.04);border:1px solid var(--hairline);transition:.12s}
+  .exp-tab:hover{color:var(--tx);border-color:rgba(255,255,255,.18)}
+  .exp-tab.on{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(124,58,237,.3)}
+  .exp-tab.on .ico{stroke:#fff}
+  .exp-grid{columns:5;column-gap:14px}
+  @media(max-width:1300px){.exp-grid{columns:4}}
+  @media(max-width:1000px){.exp-grid{columns:3}}
+  @media(max-width:680px){.exp-grid{columns:2}}
+  .exp-cell{break-inside:avoid;margin-bottom:14px;position:relative;border-radius:14px;overflow:hidden;cursor:pointer;background:var(--card-2);border:1px solid var(--hairline);transition:transform .18s,border-color .18s}
+  .exp-cell:hover{transform:translateY(-2px);border-color:var(--tint-2)}
+  .exp-cell img,.exp-cell video{width:100%;height:auto;display:block}
+  .exp-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent 40%);opacity:0;transition:.18s}
+  .exp-cell:hover .exp-scrim{opacity:1}
+  .exp-type{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:6px;background:rgba(10,8,14,.55);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;color:#fff}
+  .exp-type .ico{width:13px;height:13px}
+
+  /* ===== Profile ===== */
+  .prof-wrap{max-width:1100px;margin:0 auto}
+  .prof-head{display:flex;align-items:center;gap:22px;padding:18px 0 24px}
+  .prof-av{position:relative;width:96px;height:96px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-size:38px;font-weight:800;color:#fff;flex:none}
+  .prof-edit{position:absolute;right:2px;bottom:2px;width:26px;height:26px;border-radius:50%;background:var(--card-2);border:1px solid var(--hairline);display:grid;place-items:center;color:var(--tx2);cursor:pointer}
+  .prof-edit:hover{color:var(--tx);border-color:var(--tint-2)}
+  .prof-name-row{display:flex;align-items:center;gap:16px}
+  .prof-name{font-size:24px;font-weight:800;letter-spacing:-.4px;color:var(--tx)}
+  .prof-stats{display:flex;gap:24px;margin-top:10px;color:var(--tx2);font-size:14px}
+  .prof-stats b{color:var(--tx);font-weight:800;margin-right:3px}
+  .prof-tabs{display:flex;gap:26px;border-bottom:1px solid var(--hairline);margin-bottom:24px}
+  .prof-tab{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--tx2);padding:12px 2px;border-bottom:2px solid transparent;cursor:pointer;margin-bottom:-1px}
+  .prof-tab:hover{color:var(--tx)}
+  .prof-tab.on{color:var(--tx);border-bottom-color:var(--primary)}
+  .prof-empty{text-align:center;color:var(--tx3);padding:80px 20px;font-size:15px}
+
+  /* ===== Ratio dropdown popup ===== */
+  .popmenu{position:fixed;z-index:300;background:var(--card-2);border:1px solid var(--hairline);border-radius:12px;padding:6px;box-shadow:0 14px 40px rgba(0,0,0,.5);min-width:96px;backdrop-filter:blur(14px)}
+  .popitem{padding:9px 14px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--tx2);cursor:pointer}
+  .popitem:hover{background:rgba(255,255,255,.07);color:var(--tx)}
+  .popitem.on{color:#cbb3ff;background:var(--tint)}
 </style>
 </head>
 <body>
@@ -308,24 +534,18 @@
   <aside class="sidebar">
     <div class="brand"><img class="mark" src="assets/logo.png" alt="Genius logo"/> Genius</div>
     <nav class="nav" id="nav">
-      <div class="nav-lbl">Explore</div>
       <a data-route="#/home"><svg class="ico" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg> Home</a>
-      <a data-route="#/create"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Create <span class="badge" id="nav-count"></span></a>
-      <div class="nav-lbl">Your stuff</div>
-      <a data-route="#/gallery"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg> Gallery</a>
-      <a data-route="#/wallet"><svg class="ico" viewBox="0 0 24 24"><path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5L12 21l-4.9 2.6.9-5.5-4-3.9 5.5-.8z"/></svg> Plan</a>
-      <a data-route="#/earn"><svg class="ico" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Earn</a>
+      <a data-route="#/explore"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg> Explore</a>
+      <a data-route="#/gallery"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/></svg> History</a>
+      <a data-route="#/profile"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg> Profile</a>
+      <div class="nav-lbl">AI Tools</div>
+      <a data-route="#/app/t2i"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg> Image Generator</a>
+      <a onclick="comingSoon('Video Generator')"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="13" height="14" rx="2.5"/><path d="m16 9 5-3v12l-5-3z"/></svg> Video Generator</a>
     </nav>
 
-    <div class="wallet-card">
-      <div class="lbl" id="sb-lbl">Your plan</div>
-      <div class="bal" style="font-size:19px" id="sb-plan">Free plan</div>
-      <button class="btn btn-primary btn-sm btn-block" data-route="#/wallet" id="sb-cta">👑 Go Pro</button>
-    </div>
-
-    <div class="me" id="me-row">
-      <div class="av" id="me-av" data-route="#/wallet">G</div>
-      <div style="flex:1;min-width:0;cursor:pointer" data-route="#/wallet"><div class="nm" id="me-nm">Guest</div><div class="tier" id="me-tier">Not signed in</div></div>
+    <div class="me" id="me-row" style="margin-top:auto">
+      <div class="av" id="me-av" data-route="#/profile">G</div>
+      <div style="flex:1;min-width:0;cursor:pointer" data-route="#/profile"><div class="nm" id="me-nm">Guest</div><div class="tier" id="me-tier">Not signed in</div></div>
       <button id="me-signout" title="Sign out" onclick="signOut()" style="display:none;background:none;border:none;cursor:pointer;color:var(--tx2);padding:6px;border-radius:8px" onmouseover="this.style.background='var(--surf2,#1E1C28)'" onmouseout="this.style.background='none'">
         <svg class="ico" viewBox="0 0 24 24" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
       </button>
@@ -437,17 +657,18 @@ const FEED = [
 /* ---------- Genius Pro subscription plans (the paid product — NOT credits) ----------
    USD amounts shown are the selling prices; map each plan id to a provider price in CONFIG.billing.prices. Pro = unlimited generations. */
 const PLANS = [
-  { id:"weekly",  nm:"Pro Weekly",  usd:"$4.99",  per:"week" },
-  { id:"monthly", nm:"Pro Monthly", usd:"$9.99",  per:"month", featured:true, tag:"Most popular" },
-  { id:"yearly",  nm:"Pro Yearly",  usd:"$59.99", per:"year",  tag:"Save 50%" },
+  { id:"weekly",  nm:"Weekly",  usd:"$5.99",  per:"week",  featured:true, tag:"Most Popular" },
+  { id:"monthly", nm:"Monthly", usd:"$14.99", per:"month" },
+  { id:"yearly",  nm:"Yearly",  usd:"$39.99", per:"year" },
 ];
-const PRO_PERKS = ["Unlimited generations","Priority GPU queue","No watermark","Early access to new mini apps"];
+const PRO_PERKS = ["AI Face Retouching & Enhancement","500+ Beauty Filters & Effects","HD Export Without Watermark","Unlimited Generations & Saves","Cancel Anytime"];
 
 /* ---------- State (mock; localStorage) ---------- */
 const DEFAULT_STATE = {
   user:null, plan:"free",        // "free" (everyone at M0) | "pro"
   activity:[],                   // subscription / account events (NOT credits)
-  gallery:[]
+  gallery:[],
+  onboarded:false                // false → first visit shows the Welcome/intro screen
 };
 const isPro = ()=> S.plan==="pro";
 let S = load();
@@ -475,15 +696,16 @@ function toast(kind,title,sub){
 
 /* ---------- Sidebar / chrome sync ---------- */
 function syncChrome(){
-  const nc=$("#nav-count"); if(nc) nc.textContent = M0_SERVICES.length;
-  $("#sb-plan").textContent = isPro() ? "👑 Genius Pro" : "Free plan";
+  const sp=$("#sb-plan"); if(sp) sp.textContent = isPro() ? "👑 Genius Pro" : "Free plan";
   const cta=$("#sb-cta");
-  if(isPro()){ cta.textContent="👑 Pro active"; cta.disabled=true; } else { cta.textContent="👑 Go Pro"; cta.disabled=false; }
-  const av=$("#me-av"), nm=$("#me-nm"), tier=$("#me-tier"), so=$("#me-signout");
-  if(S.user){ av.textContent=S.user.name[0].toUpperCase(); nm.textContent=S.user.name; tier.textContent=isPro()?"Genius Pro":S.user.email; if(so) so.style.display=""; }
-  else{ av.textContent="G"; nm.textContent="Guest"; tier.textContent="Sign in to create"; if(so) so.style.display="none"; }
+  if(cta){ if(isPro()){ cta.textContent="👑 Pro active"; cta.disabled=true; } else { cta.textContent="Upgrade Now"; cta.disabled=false; } }
+  const av=$("#me-av"), nm=$("#me-nm"), tier=$("#me-tier"), so=$("#me-signout"), avt=$("#me-av-top");
+  const initial = S.user ? S.user.name[0].toUpperCase() : "G";
+  if(avt) avt.textContent = initial;
+  if(S.user){ if(av) av.textContent=initial; if(nm) nm.textContent=S.user.name; if(tier) tier.textContent=isPro()?"Genius Pro":S.user.email; if(so) so.style.display=""; }
+  else{ if(av) av.textContent="G"; if(nm) nm.textContent="Guest"; if(tier) tier.textContent="Sign in to create"; if(so) so.style.display="none"; }
   const cr=location.hash||"#/home";
-  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("active", a.dataset.route===cr || (cr.startsWith("#/app/")&&a.dataset.route==="#/create")));
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("active", a.dataset.route===cr));
 }
 
 /* =====================================================================
@@ -501,23 +723,46 @@ function initAuth(){
   if(!FB_ENABLED){ console.info("[auth] mock mode — fill config.firebase to enable Firebase."); return; }
   firebase.initializeApp(CFG.firebase);
   FB = firebase.auth();
-  // Single source of truth: Firebase drives S.user.
+  // Single source of truth: Firebase drives S.user. This fires reliably AFTER a
+  // same-tab redirect sign-in (Google/Apple) once the page reloads with the user.
   FB.onAuthStateChanged(u=>{
-    if(u){ S.user = { uid:u.uid, name:u.displayName || (u.email? u.email.split("@")[0] : "Creator"), email:u.email||"", photo:u.photoURL||"", provider:(u.providerData[0]&&u.providerData[0].providerId)||"firebase" }; }
-    else { S.user = null; }
-    save(); render();
+    if(u){
+      S.user = { uid:u.uid, name:u.displayName || (u.email? u.email.split("@")[0] : "Creator"), email:u.email||"", photo:u.photoURL||"", provider:(u.providerData[0]&&u.providerData[0].providerId)||"firebase" };
+      save();
+      // gx_intent present = a sign-in was just initiated in this tab → finish it
+      // (close modal, toast, navigate). Absent = a normal reload → just render.
+      let intent=null; try{ intent=sessionStorage.getItem("gx_intent"); }catch(e){}
+      if(intent) finishLogin(u.displayName||u.email); else render();
+    } else {
+      S.user = null; save(); render();
+    }
     refreshSubscription();   // pull live Pro status for this user (no-op unless billing configured)
   });
+  // Surface any redirect error (e.g. auth/unauthorized-domain). The actual sign-in is
+  // completed by onAuthStateChanged above, not here.
+  FB.getRedirectResult().catch(authErr);
+}
+/* Finish a sign-in: consume the stored intent, close the modal, navigate. */
+function finishLogin(name){
+  let intent="back"; try{ intent=sessionStorage.getItem("gx_intent")||"back"; sessionStorage.removeItem("gx_intent"); }catch(e){}
+  const cb=pendingAfterAuth; pendingAfterAuth=null;
+  closeAuth();
+  toast("ok","Welcome, "+((name||"creator").split(" ")[0])+"!","You're signed in.");
+  if(intent==="paywall"){ go("#/home"); setTimeout(openPaywall,60); }
+  else if(intent==="home"){ go("#/home"); }
+  else { render(); if(cb) cb(); }   // "back" → stay; run same-tab resume callback if any
 }
 
 // Already signed in → just return true; the caller continues. (Do NOT run `then`
 // here — the caller IS the action, so running it would re-enter and recurse forever.)
 // `then` is only the deferred resume, fired by afterAuth() once a fresh login completes.
 function requireAuth(then){ if(S.user) return true; pendingAfterAuth=then; openAuth(); return false; }
-function afterAuth(name){ closeAuth(); toast("ok","Welcome, "+(name||"creator").split(" ")[0]+"!","You're signed in."); const cb=pendingAfterAuth; pendingAfterAuth=null; render(); cb&&cb(); }
+function afterAuth(name){ finishLogin(name); }   /* legacy alias → finishLogin */
 function authErr(e){ console.error(e); toast("err","Sign-in failed", (e&&e.message)||"Please try again."); }
 
-function openAuth(){
+function openAuth(intent){
+  // Persist what to do AFTER a redirect sign-in (Google/Apple reload the page).
+  try{ sessionStorage.setItem("gx_intent", intent||"back"); }catch(e){}
   const m=el(`<div class="scrim-modal" id="authmodal">
     <div class="modal">
       <div class="mclose" onclick="closeAuth()"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
@@ -542,39 +787,53 @@ function showEmailForm(){
     <button class="auth-btn" onclick="openAuthBack()">← Other options</button>`;
   setTimeout(()=>{ const e=$("#em"); e&&e.focus(); },30);
 }
-function openAuthBack(){ closeAuth(); openAuth(); }
+function openAuthBack(){ let i="back"; try{ i=sessionStorage.getItem("gx_intent")||"back"; }catch(e){} closeAuth(); openAuth(i); }
 
-/* --- provider handlers (real Firebase, else mock) --- */
+/* --- provider handlers (real Firebase, else mock) ---
+   Sign in with POPUP first: it reliably completes and fires onAuthStateChanged
+   (which then navigates Home/Paywall via finishLogin). signInWithRedirect is flaky
+   on localhost (cross-domain cookies with the auth handler), so we only fall back to
+   it when the popup is blocked. Navigation is handled in onAuthStateChanged, not here. */
+function oauthSignIn(provider){
+  FB.signInWithPopup(provider).catch(e=>{
+    const code = e && e.code;
+    if(code==="auth/popup-closed-by-user" || code==="auth/cancelled-popup-request") return; // user dismissed
+    if(code==="auth/popup-blocked" || code==="auth/operation-not-supported-in-this-environment"){
+      FB.signInWithRedirect(provider).catch(authErr);   // fall back to same-tab redirect
+    } else authErr(e);
+  });
+}
 function loginGoogle(){
   if(!FB_ENABLED) return mockLogin("google");
-  FB.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    .then(r=>afterAuth(r.user.displayName)).catch(authErr);
+  oauthSignIn(new firebase.auth.GoogleAuthProvider());
 }
 function loginApple(){
   if(!FB_ENABLED) return mockLogin("apple");
   const p=new firebase.auth.OAuthProvider("apple.com"); p.addScope("email"); p.addScope("name");
-  FB.signInWithPopup(p).then(r=>afterAuth(r.user.displayName||r.user.email)).catch(authErr);
+  oauthSignIn(p);
 }
 function loginEmail(){
   const email=($("#em")||{}).value, pw=($("#pw")||{}).value;
   if(!email || !pw || pw.length<6){ toast("info","Check your details","Enter an email and a 6+ char password."); return; }
   if(!FB_ENABLED) return mockLogin("email", email);
-  // Try sign-in; if no account, create one (prototype convenience).
+  // Email sign-in stays in-page (no redirect). onAuthStateChanged → finishLogin handles
+  // navigation; if no account exists, create one (prototype convenience).
   FB.signInWithEmailAndPassword(email,pw)
-    .then(r=>afterAuth(r.user.email))
     .catch(e=>{
-      if(e.code==="auth/user-not-found"){ FB.createUserWithEmailAndPassword(email,pw).then(r=>afterAuth(r.user.email)).catch(authErr); }
+      if(e.code==="auth/user-not-found"){ FB.createUserWithEmailAndPassword(email,pw).catch(authErr); }
       else authErr(e);
     });
 }
 function mockLogin(provider, email){
   const names={google:"Alex Rivera",apple:"Sam Lee",email:(email?email.split("@")[0]:"Jordan Pham")};
   S.user={ uid:"mock-"+provider, name:names[provider], email:email||(provider==="email"?"you@genius.io":provider+"@user.com"), provider:"mock:"+provider };
-  save(); afterAuth(S.user.name);
+  save(); finishLogin(S.user.name);   // no onAuthStateChanged in mock mode
 }
 function signOut(){
-  if(FB_ENABLED && FB){ FB.signOut().then(()=>{ toast("info","Signed out",""); }).catch(authErr); }
-  else { S.user=null; save(); render(); toast("info","Signed out",""); }
+  // After sign-out a guest should land back on Welcome (the bare domain root).
+  const toRoot = ()=>{ if(location.hash){ history.replaceState(null,"",location.pathname); } render(); };
+  if(FB_ENABLED && FB){ FB.signOut().then(()=>{ toRoot(); toast("info","Signed out",""); }).catch(authErr); }
+  else { S.user=null; save(); toRoot(); toast("info","Signed out",""); }
 }
 
 /* API trace — console only (no on-screen popup). Visible in DevTools for debugging. */
@@ -666,15 +925,22 @@ function buildInput(service, raw){
     // fal seedream/v4.5/text-to-image. Aspect ratio + image count come from the
     // dock controls (raw.ratio = fal imageSize enum, raw.count = number of images);
     // both default to the previous values so the call is always valid.
-    t2i: () => ({
-      prompt: raw.prompt,
-      imageSize: raw.ratio || "square_hd",   // square_hd | portrait_16_9 | landscape_16_9
-      numImages: raw.count || 1,
-      max_images: raw.count || 1,
-      seed: 0,
-      syncMode: false,
-      enableSafetyChecker: true,
-    }),
+    t2i: () => {
+      const o = {
+        prompt: raw.prompt,
+        imageSize: raw.ratio || "square_hd",   // square_hd | portrait_16_9 | landscape_16_9
+        numImages: raw.count || 1,
+        max_images: raw.count || 1,
+        seed: 0,
+        syncMode: false,
+        enableSafetyChecker: true,
+      };
+      // Edit mode: user clicked a result to continue editing → send it as the source image
+      // (image-to-image). Only added when an edit base is set, so pure text-to-image is
+      // unchanged. raw.image is a real result URL (server-reachable), not a local objectURL.
+      if(raw.image && raw.editBase) o.image = raw.image;
+      return o;
+    },
     // i2v:             () => ({ positivePrompt: raw.prompt, image: raw.image, ratio:"16:9", resolution:"720p", duration:5, outputSound:false }),
     // "i2i-restyle":   () => ({ image: raw.image, style: raw.style }),
     // headshot:        () => ({ image: raw.image, style: raw.style }),
@@ -744,6 +1010,7 @@ function startGeneration(service, input){
 }
 function renderJobState(label){
   const out=$("#svc-out"); if(!out) return;
+  setCanvasAspect(out, "");   // loading uses the default large frame
   out.innerHTML = `<div class="job"><div class="spinner"></div><div class="status">${esc(label)}</div><div class="sub">Result will be saved to your Gallery</div></div>`;
 }
 function renderJobError(msg){
@@ -762,10 +1029,20 @@ window.addEventListener("hashchange", render);
 document.addEventListener("click", e=>{ const a=e.target.closest("[data-route]"); if(a){ e.preventDefault(); go(a.dataset.route); } });
 
 function render(){
-  const h = location.hash || "#/home";
+  stopPromptRotator();   // stop any running Home placeholder rotator before switching views
+  const h = location.hash || "#/";
   const v = $("#view");
-  if(h.startsWith("#/app/")) viewService(v, h.split("/")[2]);
+  // Root landing: guests (not signed in) see Welcome at the bare domain (no #/welcome
+  // in the URL); signed-in users see Home. `#/welcome` still works as an explicit alias.
+  const atRoot = (h==="#/" || h==="#/welcome");
+  const showWelcome = atRoot && !S.user;
+  document.body.classList.toggle("welcome-mode", showWelcome);
+  if(showWelcome) viewWelcome(v);
+  else if(atRoot) viewHome(v);                       // signed-in at root → Home
+  else if(h.startsWith("#/app/")) viewService(v, h.split("/")[2]);
   else if(h==="#/create") viewCreate(v);
+  else if(h==="#/explore") viewExplore(v);
+  else if(h==="#/profile") viewProfile(v);
   else if(h==="#/gallery") viewGallery(v);
   else if(h==="#/wallet") viewWallet(v);
   else if(h==="#/earn") viewEarn(v);
@@ -773,26 +1050,265 @@ function render(){
   window.scrollTo(0,0); syncChrome();
 }
 
-/* ---------- HOME (AI Studio "Explore" layout — feature grid, no media feed) ---------- */
+/* ---------- WELCOME / INTRO (first-visit marketing screen, Davinci-style funnel) ----------
+   New visitor → this screen. "Start Free" → login → paywall → Home. "Try Genius" → t2i. */
+const WL_FEATURES = [
+  { ico:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>', t:"All-in-One Suite", d:"Image, video, and editing — all in one place." },
+  { ico:'<path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/>', t:"Powerful AI Models", d:"Access the latest & most advanced AI models." },
+  { ico:'<path d="M12 3 4 6v6c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V6z"/>', t:"Trusted by Creators", d:"Loved by 100M+ creators worldwide." },
+  { ico:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>', t:"Your Creations, Yours", d:"Private, secure, and always under your control." },
+];
+const WL_GALLERY = ["assets/intro-1.jpg","assets/intro-2.jpg","assets/intro-3.jpg","assets/intro-4.jpg","assets/intro-5.jpg"];
+function viewWelcome(v){
+  S.onboarded = true; save();   // seen once; won't auto-redirect here again
+  v.innerHTML = `
+    <div class="welcome">
+      <header class="wl-nav">
+        <div class="wl-nav-left">
+          <div class="brand"><img class="mark" src="assets/logo.png" alt="Genius logo"/> Genius</div>
+        </div>
+        <div class="wl-nav-right">
+          <button class="btn btn-ghost btn-sm" onclick="signInIntro()">Sign in</button>
+          <button class="btn btn-primary btn-sm" onclick="startFree()">Start Free Now</button>
+        </div>
+      </header>
+
+      <div class="wl-main">
+        <h1 class="wl-h1">Limitless Creativity.<br><span class="grad">All in One Place.</span><span class="wl-spark">✦</span></h1>
+        <p class="wl-sub">Genius is your all-in-one AI creative suite for generating<br>images, videos, and visuals that inspire.</p>
+        <button class="btn btn-primary wl-cta-btn" onclick="startFree()"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg> Start Creating Now</button>
+
+        <div class="wl-feats">
+          ${WL_FEATURES.map(f=>`<div class="wl-feat">
+            <span class="wl-feat-ico"><svg class="ico" viewBox="0 0 24 24">${f.ico}</svg></span>
+            <div><div class="wl-feat-t">${esc(f.t)}</div><div class="wl-feat-d">${esc(f.d)}</div></div>
+          </div>`).join("")}
+        </div>
+      </div>
+
+      <div class="wl-gallery">
+        ${WL_GALLERY.map((src,i)=>`<div class="wl-g wl-g${i+1}"><div class="wl-card"><img src="${src}" alt="" loading="lazy"/></div></div>`).join("")}
+      </div>
+    </div>`;
+}
+/* Sign in (Intro): cached → Home; else login → Home (no paywall). */
+function signInIntro(){ S.onboarded=true; save(); if(S.user){ go("#/home"); return; } pendingAfterAuth=()=>go("#/home"); openAuth("home"); }
+/* Start Free / Sign in (Welcome).
+   - Đã đăng nhập (cache, vd back từ Home về Welcome rồi bấm lại) → vào thẳng Home,
+     KHÔNG login lại, KHÔNG hiện paywall.
+   - Chưa đăng nhập → mở Login; login xong (LẦN ĐẦU) → Home + Paywall. */
+function startFree(){
+  S.onboarded=true; save();
+  if(S.user){ go("#/home"); return; }       // cached account → straight to Home
+  pendingAfterAuth = afterOnboardLogin;      // afterAuth() runs this once a fresh login completes (email/mock)
+  openAuth("paywall");                       // redirect sign-in resumes via gx_intent="paywall"
+}
+function tryGenius(){ S.onboarded=true; save(); go("#/app/t2i"); }
+function afterOnboardLogin(){ go("#/home"); openPaywall(); }
+
+/* ---------- HOME (mockup: "What do you want to create today?" hero + prompt box + cards) ---------- */
+function homeTopbar(title){
+  return `<div class="topbar home-top">
+    <h1>${esc(title||"Home")}</h1>
+    <div class="top-right">
+      ${!S.user ? `<button class="btn btn-ghost btn-sm" onclick="openAuth()">Sign in</button>` : ``}
+      <button class="btn btn-primary btn-sm" onclick="goPro()">Go Pro</button>
+      <div class="av-top" data-route="#/profile" id="me-av-top">G</div>
+    </div></div>`;
+}
 function viewHome(v){
   v.innerHTML = `
-    <div class="explore-head">
-      <h2>Explore Genius</h2>
-      <div class="seg"><span class="on">Models</span><span>Agents</span></div>
-    </div>
+    ${homeTopbar("Home")}
+    <div class="home-wrap">
+      <h2 class="home-hero">What do you want to create today?<span class="spark">✦</span></h2>
 
-    <div class="prompt-bar">
-      <svg class="ico" viewBox="0 0 24 24" style="stroke:var(--tx3)"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg>
-      <input id="home-prompt" placeholder="Start typing a prompt to generate an image…" />
-      <button class="btn btn-primary" onclick="quickGen()">Generate</button>
-    </div>
+      <div class="cbox">
+        <textarea id="home-prompt" class="cbox-input" rows="2" placeholder="Describe your image or video…" oninput="autoGrow(this);stopPromptRotator()" onfocus="onPromptFocus()" onblur="onPromptBlur()" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();quickGen()}"></textarea>
+        <div class="cbox-ctls">
+          <span class="seg2" id="home-mode">
+            <span class="seg2-b on" title="Image" onclick="homeMode('image',this)"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg></span>
+            <span class="seg2-b" title="Video (coming soon)" onclick="homeMode('video',this)"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><rect x="3" y="5" width="13" height="14" rx="2.5"/><path d="m16 9 5-3v12l-5-3z"/></svg></span>
+          </span>
+          <span class="ctl model-pill"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--primary)"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg> Seedream <svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="m6 9 6 6 6-6"/></svg></span>
+          ${ratioTriggerHTML("home-ratio","home")}
+          <span class="stepper"><button onclick="homeCount(-1)">−</button><span id="home-count">1</span><button onclick="homeCount(1)">+</button></span>
+          <button class="btn btn-primary cbox-go" onclick="quickGen()"><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg> Generate</button>
+        </div>
+      </div>
 
-    <div class="apps-grid">${AVAILABLE().map(appCard).join("")}</div>`;
+      <div class="home-cards">${HOME_CARDS.map(homeCard).join("")}</div>
+      <div class="home-more"><button class="btn btn-ghost" data-route="#/explore">Explore More <svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px"><path d="m9 6 6 6-6 6"/></svg></button></div>
+    </div>`;
+  startPromptRotator();
 }
+/* ---------- Home prompt placeholder rotator ---------- */
+let PH_TIMER=null;
+const PH_HINTS=["a cyberpunk city glowing at night...","an astronaut standing on Mars...","a magical floating castle at sunset...","a neon sports car in the rain..."];
+const PH_DEFAULT="Describe your image or video…";
+const prefersReducedMotion=()=>{ try{ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } };
+function startPromptRotator(){
+  stopPromptRotator();
+  const t=$("#home-prompt"); if(!t) return;
+  if(prefersReducedMotion()) { t.setAttribute("placeholder",PH_DEFAULT); return; }   // no rotation
+  let i=0; t.setAttribute("placeholder",PH_HINTS[0]);
+  PH_TIMER=setInterval(()=>{
+    const el2=$("#home-prompt");
+    if(!el2){ stopPromptRotator(); return; }
+    if(document.activeElement===el2 || el2.value){ return; }   // paused while focused / typing
+    el2.classList.add("ph-hide");                               // fade out
+    setTimeout(()=>{ if(!$("#home-prompt"))return; i=(i+1)%PH_HINTS.length; el2.setAttribute("placeholder",PH_HINTS[i]); el2.classList.remove("ph-hide"); }, 420);
+  }, 3000);
+}
+function stopPromptRotator(){ if(PH_TIMER){ clearInterval(PH_TIMER); PH_TIMER=null; } }
+function onPromptFocus(){ stopPromptRotator(); const t=$("#home-prompt"); if(t){ t.classList.remove("ph-hide"); t.setAttribute("placeholder",PH_DEFAULT); } }
+function onPromptBlur(){ const t=$("#home-prompt"); if(t && !t.value) startPromptRotator(); }
+/* Go Pro — require sign-in first; after login open the paywall. */
+/* Go Pro → Paywall, but only when signed in. Guests get the Sign in modal first;
+   after login (gx_intent="paywall") the Paywall opens automatically. */
+function goPro(){ if(!S.user){ openAuth("paywall"); return; } openPaywall(); }
+
+/* Home prompt-box state (visual controls; carried into t2i on Generate) */
+const HOME_OPTS = { ratio:"landscape_16_9", count:1, mode:"image" };
+/* Aspect-ratio options (dropdown). Values = fal seedream `imageSize` enums. */
+const RATIOS = [["landscape_16_9","16:9"],["portrait_16_9","9:16"],["portrait_4_3","3:4"],["landscape_4_3","4:3"]];
+function ratioLabel(v){ const r=RATIOS.find(x=>x[0]===v); return r?r[1]:"16:9"; }
+/* ratio enum → CSS aspect "W/H" (for sizing the result canvas to the image). */
+function ratioToAspect(v){ return ({square_hd:"1/1", landscape_16_9:"16/9", portrait_16_9:"9/16", portrait_4_3:"3/4", landscape_4_3:"4/3"})[v] || ""; }
+/* Resize the result canvas (#svc-out) to a given aspect "W/H"; "" → default flexible frame. */
+function setCanvasAspect(box, asp){
+  if(!box) return;
+  if(!asp){ box.removeAttribute("style"); return; }   // reset to CSS default (flex:1, min-height:46vh)
+  const [w,h]=asp.split("/").map(Number);
+  box.style.flex="none"; box.style.minHeight="0"; box.style.margin="0 auto"; box.style.alignSelf="center";
+  box.style.aspectRatio=asp; box.style.maxHeight="72vh"; box.style.maxWidth="100%";
+  if(w>=h){ box.style.width="100%"; box.style.height="auto"; }      // landscape/square → width-driven
+  else    { box.style.height="72vh"; box.style.width="auto"; }      // portrait → height-driven
+}
+function homeMode(m,node){ if(m==="video"){ comingSoon("Video Generator"); return; } HOME_OPTS.mode=m; const g=node.parentElement; g.querySelectorAll(".seg2-b").forEach(b=>b.classList.remove("on")); node.classList.add("on"); }
+function homeCount(d){ HOME_OPTS.count=Math.min(4,Math.max(1,HOME_OPTS.count+d)); const el=$("#home-count"); if(el) el.textContent=HOME_OPTS.count; }
+/* Aspect-ratio dropdown — opens a small popup above the trigger; scope = 'home' | 'svc'. */
+function ratioTriggerHTML(id, scope){
+  const cur = scope==='home'?HOME_OPTS.ratio:CURRENT_INPUT.ratio;
+  return `<span class="ctl" id="${id}" onclick="openRatioMenu(this,'${scope}')"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="4" y="4" width="16" height="16" rx="2"/></svg> <span>${ratioLabel(cur)}</span> <svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="m6 9 6 6 6-6"/></svg></span>`;
+}
+function openRatioMenu(node, scope){
+  closeRatioMenu();
+  const cur = scope==='home'?HOME_OPTS.ratio:CURRENT_INPUT.ratio;
+  const m=el(`<div class="popmenu" id="popmenu">${RATIOS.map(r=>`<div class="popitem ${r[0]===cur?'on':''}" onclick="pickRatio('${scope}','${r[0]}')">${r[1]}</div>`).join("")}</div>`);
+  document.body.appendChild(m);
+  const rect=node.getBoundingClientRect();
+  m.style.left=rect.left+"px";
+  m.style.top=(rect.top - m.offsetHeight - 8)+"px";
+  setTimeout(()=>document.addEventListener("click",closeRatioMenu,{once:true}),0);
+}
+function pickRatio(scope,v){
+  if(scope==='home'){ HOME_OPTS.ratio=v; const t=$("#home-ratio span"); if(t) t.textContent=ratioLabel(v); }
+  else { CURRENT_INPUT.ratio=v; const t=$("#svc-ratio span"); if(t) t.textContent=ratioLabel(v); }
+  closeRatioMenu();
+}
+function closeRatioMenu(){ const m=$("#popmenu"); if(m) m.remove(); }
+/* Home feature cards — clean cinematic crops + CSS overlays (type icon + badge)
+   so the corner chrome is always crisp and never clipped by the card radius. */
+const HOME_CARDS = [
+  { src:"assets/home-1.jpg", type:"img",   badge:"4K" },
+  { src:"assets/home-2.jpg", type:"video", badge:"00:06" },
+  { src:"assets/home-3.jpg", type:"img",   badge:"4K" },
+  { src:"assets/home-4.jpg", type:"video", badge:"00:08" },
+];
+function homeCard(c){
+  const isVid=c.type==="video";
+  const ico = isVid ? '<rect x="3" y="5" width="13" height="14" rx="2.5"/><path d="m16 9 5-3v12l-5-3z"/>'
+                    : '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/>';
+  return `<div class="hc" onclick="go('#/app/t2i')"><img src="${c.src}" alt="" loading="lazy"/>
+    <span class="hc-type"><svg class="ico" viewBox="0 0 24 24">${ico}</svg></span>
+    ${c.badge?`<span class="hc-badge">${esc(c.badge)}</span>`:""}</div>`;
+}
+/* HOME → Create: carry prompt + ratio + count into t2i (pending, applied in viewService). */
+let HOME_PENDING = null;
 function quickGen(){
-  const p=$("#home-prompt").value.trim();
+  const p=($("#home-prompt").value||"").trim();
   if(!p){ toast("info","Type a prompt first","Describe what you want to see."); return; }
-  go("#/app/t2i"); setTimeout(()=>{ const t=$("#in-prompt"); if(t){ t.value=p; } }, 30);
+  stopPromptRotator();
+  HOME_PENDING = { prompt:p, ratio:HOME_OPTS.ratio, count:HOME_OPTS.count };
+  // brief loading pulse on the Generate button before navigating to the studio
+  const btn=$(".cbox-go"); if(btn){ btn.classList.add("gen-loading"); }
+  const nav=()=>go("#/app/t2i");
+  if(btn && !prefersReducedMotion()) setTimeout(nav, 480); else nav();
+}
+/* ---------- EXPLORE (masonry gallery + tabs + bottom prompt dock) ---------- */
+const EXPLORE_TABS = [
+  { id:"history", lbl:"History", route:"#/gallery", ico:'<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/>' },
+  { id:"explore", lbl:"Explore", on:true, ico:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/>' },
+];
+/* Clean sample set for the masonry grid — uses bundled assets only.
+   (Deliberately NOT the home-*.jpg crops, which have baked-in badges that would
+    collide with the CSS type-icon overlay.) Replace with CDN content later. */
+const EXPLORE_TILES = (function(){
+  const src=["brazil.png","wc.mp4","netherlands.png","kid1.mp4","japan.png","kid2.mp4","brazil.png","wc.mp4","netherlands.png","kid1.mp4","japan.png","kid2.mp4","brazil.png","wc.mp4","netherlands.png"];
+  return src.map(s=>({ type: s.endsWith(".mp4")?"video":"img", src:"assets/"+s }));
+})();
+function viewExplore(v){
+  v.innerHTML = `
+    ${homeTopbar("Explore")}
+    <div class="exp-wrap">
+      <div class="exp-grid">${EXPLORE_TILES.map(exploreTile).join("")}</div>
+    </div>
+    <div class="dock">
+      <div class="dock-inner">
+        ${promptToggleHTML("image")}
+        <div class="dock-row">
+          <textarea id="exp-prompt" rows="1" placeholder="Describe your image or video…" oninput="autoGrow(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();exploreGen()}"></textarea>
+          <span class="ctl model-pill"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px;stroke:var(--primary)"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg> Seedream</span>
+          <button class="btn btn-primary cbox-go" onclick="exploreGen()"><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3l1.8 4.7L18.5 9l-4.7 1.8L12 15l-1.8-4.2L5.5 9l4.7-1.3z"/></svg> Generate</button>
+        </div>
+      </div>
+    </div>`;
+}
+function exploreTabHTML(t){
+  const act = t.route ? `data-route="${t.route}"` : (t.on ? "" : `onclick="comingSoon('${t.lbl}')"`);
+  return `<span class="exp-tab ${t.on?'on':''}" ${act}><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px">${t.ico}</svg> ${t.lbl}</span>`;
+}
+function exploreTile(f){
+  const isVid=f.type==="video";
+  return `<div class="exp-cell" onclick="go('#/app/t2i')">${media(f)}<div class="exp-scrim"></div>
+    <span class="exp-type"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px">${isVid?'<rect x="3" y="5" width="13" height="14" rx="2.5"/><path d="m16 9 5-3v12l-5-3z"/>':'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/>'}</svg></span></div>`;
+}
+function exploreGen(){
+  const p=($("#exp-prompt").value||"").trim();
+  if(!p){ toast("info","Type a prompt first","Describe what you want to see."); return; }
+  HOME_PENDING = { prompt:p, ratio:HOME_OPTS.ratio, count:HOME_OPTS.count }; go("#/app/t2i");
+}
+
+/* ---------- PROFILE (account: avatar, username, likes/creations, tabs) ---------- */
+function viewProfile(v){
+  const name = S.user ? (S.user.name||(S.user.email||"").split("@")[0]||"user") : "Guest";
+  const initial = (name[0]||"G").toUpperCase();
+  const creations = (S.user ? S.gallery.filter(g=>g.status==="success").length : 0);
+  v.innerHTML = `
+    ${homeTopbar("Profile")}
+    <div class="prof-wrap">
+      <div class="prof-head">
+        <div class="prof-av">${initial}<span class="prof-edit" onclick="editProfile()"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span></div>
+        <div class="prof-meta">
+          <div class="prof-name-row">
+            <h1 class="prof-name">${esc(name)}</h1>
+            ${S.user ? `<button class="btn btn-ghost btn-sm" onclick="editProfile()">Edit Profile</button>`
+                     : `<button class="btn btn-primary btn-sm" onclick="openAuth()">Sign in</button>`}
+          </div>
+          <div class="prof-stats"><span><b>${creations}</b> Creations</span></div>
+        </div>
+      </div>
+      <div class="prof-tabs">
+        <span class="prof-tab on"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg> Creations</span>
+      </div>
+      <div id="prof-body">${profBody("creations")}</div>
+    </div>`;
+}
+function editProfile(){ if(!S.user){ openAuth(); return; } toast("info","Edit Profile","Coming soon"); }
+function profBody(which){
+  const succ = S.user ? S.gallery.filter(g=>g.status==="success") : [];
+  if(!succ.length) return `<div class="prof-empty">No creations shared yet</div>`;
+  return `<div class="exp-grid">${succ.map(g=>`<div class="exp-cell">${media(g.output)}</div>`).join("")}</div>`;
 }
 function feedTile(f){
   const s=svc(f.svc);
@@ -828,17 +1344,16 @@ function viewService(v, id){
   const s = svc(id);
   if(!s){ go("#/create"); return; }
   if(isSoon(s)){ comingSoon(s.name); go("#/create"); return; }   // M0: only t2i is live
-  CURRENT_INPUT = { prompt:"", image:null, ratio:"square_hd", count:1, style:null };
+  CURRENT_INPUT = { prompt:"", image:null, ratio:"landscape_16_9", count:1, style:null };
   const needsImg = s.input.includes("image");
   const isPrompt = s.input==="prompt";
-  const recent = S.gallery.filter(g=>g.svc===id && g.status==="success").slice(0,8);
+  // Guest: no history / no previously generated results shown.
+  const recent = S.user ? S.gallery.filter(g=>g.svc===id && g.status==="success").slice(0,8) : [];
 
   v.innerHTML = `
     <div class="studio">
       <div class="svc-head">
-        <h1>${s.emoji} ${esc(s.name)}</h1>
-        <div class="top-right">${planPill()}
-          <button class="btn btn-ghost btn-sm" data-route="#/create">← All apps</button></div>
+        <h1>${esc(s.name)}</h1>
       </div>
 
       <!-- big result canvas (result shows here, full width, above the dock) -->
@@ -847,27 +1362,24 @@ function viewService(v, id){
           Describe what you want to create.<br>Your result appears here — saved to Gallery.</div>
       </div>
 
-      <div class="out-actions" id="out-actions" style="display:none;max-width:860px;margin:0 auto 8px;width:100%">
-        <button class="btn btn-ghost btn-sm" onclick="go('#/gallery')">View in Gallery</button>
-        <button class="btn btn-primary btn-sm" onclick="runService('${s.id}')">Generate again</button>
+      <div class="out-actions" id="out-actions" style="display:none;max-width:860px;margin:18px auto 8px;width:100%;justify-content:center">
+        <button class="btn btn-ghost btn-sm" onclick="saveResult()"><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg> Save</button>
+        <button class="btn btn-ghost btn-sm" onclick="shareResult()"><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg> Share</button>
       </div>
 
       ${recent.length?`<div class="row-head"><h3>Recent on this app</h3></div>
-        <div class="recent">${recent.map(g=>`<div class="r">${media(g.output)}</div>`).join("")}</div>`:""}
+        <div class="recent">${recent.map(g=>`<div class="r" onclick="showSaved('${g.id}')">${media(g.output)}</div>`).join("")}</div>`:""}
     </div>
 
     <!-- fixed bottom prompt dock (Flow / AI Studio style) -->
     <div class="dock">
       <div class="dock-inner">
+        ${promptToggleHTML(s.modality.includes("Video")?"video":"image")}
+        <div class="edit-base" id="edit-base" style="display:none"></div>
         <div class="dock-ctls">
-          <span class="ctl static">✦ ${esc(s.modality)}</span>
           ${isPrompt ? `
-          <span class="ctl-lbl">Ratio</span>
-          <span class="ctl-group" id="ctl-ratio">
-            <span class="ctl on" onclick="pickCtl('ratio','square_hd',this)">1:1</span>
-            <span class="ctl" onclick="pickCtl('ratio','portrait_16_9',this)">9:16</span>
-            <span class="ctl" onclick="pickCtl('ratio','landscape_16_9',this)">16:9</span>
-          </span>
+          <span class="ctl-lbl">Size</span>
+          ${ratioTriggerHTML("svc-ratio","svc")}
           <span class="ctl-lbl">Images</span>
           <span class="ctl-group" id="ctl-count">
             <span class="ctl on" onclick="pickCtl('count',1,this)">1</span>
@@ -880,7 +1392,7 @@ function viewService(v, id){
               <input type="file" accept="image/*" id="file-in" hidden onchange="onUpload(event)"/>
               <svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
             </label>` : ""}
-          <textarea id="in-prompt" rows="1" placeholder="${isPrompt?'Describe an image to generate…  e.g. a neon cyberpunk fox, cinematic':'Describe the motion — e.g. slow zoom, hair in the wind…'}" oninput="CURRENT_INPUT.prompt=this.value;autoGrow(this)"></textarea>
+          <textarea id="in-prompt" rows="1" placeholder="${isPrompt?'Describe an image to generate…  e.g. a neon cyberpunk fox, cinematic':'Describe the motion — e.g. slow zoom, hair in the wind…'}" oninput="CURRENT_INPUT.prompt=this.value;autoGrow(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();runService('${s.id}')}"></textarea>
           <button class="send" id="run-btn" onclick="runService('${s.id}')" title="Generate">
             <svg class="ico" viewBox="0 0 24 24" style="width:20px;height:20px;stroke-width:2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
           </button>
@@ -888,9 +1400,23 @@ function viewService(v, id){
       </div>
     </div>`;
 
-  // restore last successful output preview if exists
+  // carry over prompt + ratio + count from the Home/Explore prompt box (if user came via Generate)
+  if(HOME_PENDING && id==="t2i"){
+    const hp = HOME_PENDING; HOME_PENDING = null;
+    CURRENT_INPUT.prompt = hp.prompt; CURRENT_INPUT.ratio = hp.ratio; CURRENT_INPUT.count = hp.count;
+    const t=$("#in-prompt"); if(t){ t.value=hp.prompt; autoGrow(t); }
+    const rt=$("#svc-ratio span"); if(rt) rt.textContent=ratioLabel(hp.ratio);
+    const cg=$("#ctl-count"); if(cg){ cg.querySelectorAll(".ctl").forEach(c=>c.classList.remove("on")); const w=[...cg.querySelectorAll(".ctl")].find(c=>c.getAttribute("onclick").includes("'count',"+hp.count)); if(w) w.classList.add("on"); }
+    runService(id);   // user pressed Generate on Home/Explore → run now (no stale image flash)
+    return;
+  }
+  // Guest: no previously-generated result restored.
+  if(!S.user) return;
+  // restore last successful output preview if exists (only when NOT mid-generating)
+  const inFlight = S.gallery.some(g=>g.svc===id && g.status==="processing");
   const last = S.gallery.find(g=>g.svc===id && g.status==="success");
-  if(last) showOutput(last.output);
+  if(inFlight) renderJobState("Generating…");
+  else if(last) showOutput(last.output, last.input && last.input.ratio);
 }
 function onUpload(e){
   const f=e.target.files[0]; if(!f) return;
@@ -902,6 +1428,20 @@ function pickStyle(node,st){ document.querySelectorAll("#style-chips .chip-opt")
 function pickCtl(group, val, node){ const g=node.parentElement; g&&g.querySelectorAll(".ctl").forEach(c=>c.classList.remove("on")); node.classList.add("on"); CURRENT_INPUT[group]=val; }
 /* Auto-grow the dock textarea up to its max-height. */
 function autoGrow(el){ el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,140)+"px"; }
+
+/* Image/Video segmented toggle shown ABOVE the prompt bar (Image & Video Generator).
+   Switching selects the matching service and re-renders (changes the option set). */
+function promptToggleHTML(mode){
+  const seg=(m,on,svgInner)=>`<span class="seg2-b ${on?'on':''}" title="${m==='image'?'Image':'Video'}" onclick="switchMode('${m}')"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px">${svgInner}</svg></span>`;
+  return `<div class="dock-toggle"><span class="seg2">
+    ${seg('image', mode==='image', '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/>')}
+    ${seg('video', mode==='video', '<rect x="3" y="5" width="13" height="14" rx="2.5"/><path d="m16 9 5-3v12l-5-3z"/>')}
+  </span></div>`;
+}
+function switchMode(m){
+  if(m==='video'){ comingSoon('Video Generator'); return; }   // M0: only image (t2i) is live
+  if(!location.hash.startsWith('#/app/')) go('#/app/t2i');
+}
 function runService(id){
   const s=svc(id);
   // Read the prompt straight from the DOM at click time — robust even if the
@@ -910,15 +1450,70 @@ function runService(id){
   const pEl=$("#in-prompt"); if(pEl) CURRENT_INPUT.prompt = pEl.value;
   if(s.input.includes("image") && !CURRENT_INPUT.image){ toast("info","Upload a photo first","This app needs an input image."); return; }
   if((s.input==="prompt"||s.input.includes("prompt")) && !(CURRENT_INPUT.prompt||"").trim()){ toast("info","Type a prompt first",""); return; }
-  startGeneration(s, {...CURRENT_INPUT});
-  renderJobState(s.async?"Queued — finding a GPU…":"Generating…");
+  // BUG FIX: clear the canvas to the loading state BEFORE kicking off generation, so the
+  // previously-generated image never flashes while the new one is still rendering.
   const oa=$("#out-actions"); if(oa) oa.style.display="none";
+  renderJobState(s.async?"Queued — finding a GPU…":"Generating…");
+  startGeneration(s, {...CURRENT_INPUT});
 }
-function showOutput(out){
+let LAST_RESULT = null;   // {src, ratio} of the image currently shown (for click-to-edit)
+function showOutput(out, ratio){
   const box=$("#svc-out"); if(!box||!out) return;
-  box.innerHTML = media(out);
+  LAST_RESULT = { src: out.src, ratio: ratio||null, type: out.type||"img" };
+  // Result media (click to edit) + a gray flag (report) icon + an "Edit" hint.
+  const editable = (out.type!=="video");
+  box.innerHTML = media(out) +
+    `<button class="report-flag" title="Report" onclick="reportResult()"><svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M5 21V4h12l-2 4 2 4H5"/></svg></button>` +
+    (editable ? `<button class="edit-hint" title="Edit this image" onclick="editFromResult()"><svg class="ico" viewBox="0 0 24 24" style="width:15px;height:15px"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>` : "");
+  if(editable){ const m=box.querySelector("img"); if(m){ m.style.cursor="pointer"; m.onclick=editFromResult; } }
+  // Resize the frame to the image's size: prefer the saved ratio; else derive from the
+  // media's natural dimensions once it loads.
+  const asp = ratioToAspect(ratio);
+  if(asp){ setCanvasAspect(box, asp); }
+  else {
+    const m = box.querySelector("img,video");
+    const setNat = ()=>{ const w=(m.naturalWidth||m.videoWidth), h=(m.naturalHeight||m.videoHeight); if(w&&h) setCanvasAspect(box, w+"/"+h); };
+    if(m){ if(m.complete || m.readyState>=1) setNat(); else { m.addEventListener("load",setNat,{once:true}); m.addEventListener("loadedmetadata",setNat,{once:true}); } }
+  }
   const a=$("#out-actions"); if(a) a.style.display="flex";
 }
+/* Click a "Recent" thumbnail → show that older creation in the canvas, with the frame
+   resized to that image's original size/ratio (replaces whatever is currently shown). */
+function showSaved(id){
+  const g = S.gallery.find(x=>x.id===id);
+  if(!g || !g.output) return;
+  showOutput(g.output, g.input && g.input.ratio);
+  try{ window.scrollTo({top:0, behavior:"smooth"}); }catch(e){ window.scrollTo(0,0); }
+}
+/* Click the result image → continue editing it: set it as the edit base, show a thumbnail
+   chip in the dock, and focus the prompt for follow-up changes. The next Generate sends
+   image + prompt (image-to-image edit). */
+function editFromResult(){
+  if(!LAST_RESULT || !LAST_RESULT.src) return;
+  CURRENT_INPUT.image = LAST_RESULT.src;
+  CURRENT_INPUT.editBase = true;
+  renderEditBase();
+  const t=$("#in-prompt"); if(t){ t.placeholder="Describe your edits…  e.g. add sunglasses, change background to a beach"; t.focus(); }
+  toast("info","Editing this image","Type your changes, then Generate.");
+}
+function renderEditBase(){
+  const el2=$("#edit-base"); if(!el2) return;
+  if(CURRENT_INPUT.image && CURRENT_INPUT.editBase){
+    el2.style.display="flex";
+    el2.innerHTML = `<img src="${CURRENT_INPUT.image}" alt="edit base"/>
+      <span class="eb-lbl">Editing this image</span>
+      <button class="eb-x" title="Clear" onclick="clearEditBase()"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`;
+  } else { el2.style.display="none"; el2.innerHTML=""; }
+}
+function clearEditBase(){
+  CURRENT_INPUT.image=null; CURRENT_INPUT.editBase=false; renderEditBase();
+  const t=$("#in-prompt"); if(t) t.placeholder="Describe an image to generate…  e.g. a neon cyberpunk fox, cinematic";
+}
+/* Result actions — operate on the most recent successful creation for the current service. */
+function currentResult(){ const id=(location.hash.split("/")[2]||""); return S.gallery.find(g=>g.svc===id && g.status==="success"); }
+function saveResult(){ const r=currentResult(); if(!r||!r.output){ toast("info","Nothing to save",""); return; } const a=document.createElement("a"); a.href=r.output.src; a.download="genius-"+(r.id||"result"); document.body.appendChild(a); a.click(); a.remove(); toast("ok","Saved","Image downloaded · also in your Gallery."); }
+function shareResult(){ const r=currentResult(); if(!r||!r.output){ toast("info","Nothing to share",""); return; } const url=(()=>{try{return new URL(r.output.src, location.href).href;}catch(e){return r.output.src;}})(); if(navigator.share){ navigator.share({title:"Made with Genius", text:r.prompt||"AI creation", url}).catch(()=>{}); } else if(navigator.clipboard){ navigator.clipboard.writeText(url); toast("ok","Link copied","Share it anywhere."); } else { toast("info","Share","Copy the image from Gallery."); } }
+function reportResult(){ const r=currentResult(); if(!r){ toast("info","Nothing to report",""); return; } toast("ok","Reported","Thanks — we'll review this creation."); }
 
 /* ---------- GALLERY ---------- */
 /* ---------- Gallery pagination state (real-backend mode) ----------
@@ -992,7 +1587,7 @@ function galCard(g){
   const st = g.status;
   return `<div class="gal">${body}
     <span class="st ${st}">${st==='processing'?'<span class="pulse"></span>':''}${st[0].toUpperCase()+st.slice(1)}</span>
-    <div class="gmeta">${s.emoji} ${esc(s.name)}</div></div>`;
+    <div class="gmeta">${esc(s.name)}</div></div>`;
 }
 
 /* ---------- PLAN (Genius Pro subscription — the ONLY paid product, no credits) ---------- */
@@ -1089,6 +1684,48 @@ function handleBillingReturn(){
 }
 function cancelPro(){ S.plan="free"; logActivity("Genius Pro cancelled","Back to Free plan","✕"); save(); render(); toast("info","Pro cancelled","You're back on the Free plan."); }
 
+/* ---------- PAYWALL (Davinci-style upsell modal) ----------
+   Feature comparison (Free vs Pro) + plan select + Continue → startCheckout.
+   X / "Maybe later" closes it (no charge). Shown after onboarding login; reusable from "Go Pro". */
+let PAYWALL_PLAN = "monthly";
+function openPaywall(){
+  if($("#paywall")) return;                 // already open (dedup)
+  PAYWALL_PLAN = (PLANS.find(p=>p.featured)||PLANS[0]).id;
+  const planRow = p => `
+    <label class="pw-plan ${p.id===PAYWALL_PLAN?'sel':''}" onclick="pickPaywallPlan('${p.id}')">
+      ${p.tag?`<span class="pw-tag">${esc(p.tag)}</span>`:""}
+      <span class="pw-radio"></span>
+      <span class="pw-plan-nm">${esc(p.nm)}</span>
+      <span class="pw-plan-pr">${esc(p.usd)}</span>
+    </label>`;
+  const m = el(`<div class="scrim-modal" id="paywall">
+    <div class="modal pw">
+      <div class="mclose" onclick="closePaywall()"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
+      <div class="pw-diamond"><img src="assets/logo.png" alt=""/></div>
+      <h3 class="pw-title">Pick your plan</h3>
+      <ul class="pw-bullets">
+        ${PRO_PERKS.map(f=>`<li><span class="pw-check"><svg class="ico" viewBox="0 0 24 24" style="width:13px;height:13px;stroke-width:2.4"><path d="M20 6 9 17l-5-5"/></svg></span>${esc(f)}</li>`).join("")}
+      </ul>
+      <div class="pw-rating">
+        <div class="pw-rating-num">4.9 stars</div>
+        <div class="pw-stars">★★★★★</div>
+        <div class="pw-rating-sub">1,000+ reviews</div>
+      </div>
+      <div class="pw-plans">${PLANS.map(planRow).join("")}</div>
+      <button class="btn btn-primary btn-block pw-continue" onclick="paywallContinue()">Continue</button>
+      <div class="pw-links"><span onclick="toast('info','Restore Purchases','Coming soon')">Restore Purchases</span><span onclick="toast('info','Terms','Coming soon')">Terms</span><span onclick="toast('info','Privacy','Coming soon')">Privacy</span></div>
+    </div></div>`);
+  document.body.appendChild(m);
+}
+function pickPaywallPlan(id){
+  PAYWALL_PLAN = id;
+  document.querySelectorAll("#paywall .pw-plan").forEach(n=>n.classList.remove("sel"));
+  const ix = PLANS.findIndex(p=>p.id===id);
+  const node = document.querySelectorAll("#paywall .pw-plan")[ix]; if(node) node.classList.add("sel");
+}
+function paywallContinue(){ const id=PAYWALL_PLAN; closePaywall(); startCheckout(id); }
+function closePaywall(){ const m=$("#paywall"); if(m) m.remove(); }
+
 /* ---------- EARN (growth loop — rewards are free Pro time, NOT credits) ---------- */
 function viewEarn(v){
   const code = (S.user? S.user.name.split(" ")[0].toUpperCase() : "GENIUS")+"-2026";
@@ -1130,8 +1767,17 @@ function emptyState(v,title,head,sub,auth){
 }
 
 /* ---------- boot ---------- */
+// Sweep orphaned in-flight jobs: a "processing" item whose generation promise died on a
+// page reload would otherwise make the Generator spin forever. Mark them failed on load.
+if(S.gallery && S.gallery.some(g=>g.status==="processing")){
+  S.gallery.forEach(g=>{ if(g.status==="processing"){ g.status="failed"; g.error="Interrupted — please try again."; } });
+  save();
+}
 initAuth();
 handleBillingReturn();    // handle ?billing=success|cancel redirect from the payment provider
+// Welcome is the default landing for guests (render() shows it at the bare domain when
+// not signed in). Drop any stale #/welcome hash so the URL stays clean at the root.
+if(location.hash==="#/welcome") history.replaceState(null,"",location.pathname);
 render(); syncChrome();
 </script>
 </body>
