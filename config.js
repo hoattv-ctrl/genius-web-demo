@@ -58,5 +58,15 @@ window.CONFIG = {
     prices: { weekly: "", monthly: "", yearly: "" },
     successUrl: "",
     cancelUrl: ""
+  },
+
+  // RevenueCat — dynamic paywall pricing. Load the RevenueCat Web SDK, expose it as
+  // window.Purchases (configured with the public API key + app user id), then set
+  // enabled=true. The paywall calls getOfferings() → renders live plans/prices; falls
+  // back to PLANS[] when disabled/unavailable.
+  revenuecat: {
+    enabled: false,
+    apiKey: "",        // RevenueCat public Web Billing API key (client-safe)
+    offeringId: ""     // "" → offerings.current
   }
 };

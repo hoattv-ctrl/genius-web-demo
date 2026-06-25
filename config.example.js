@@ -57,5 +57,18 @@ window.CONFIG = {
     prices: { weekly: "", monthly: "", yearly: "" },   // planId → provider price id (e.g. Stripe price_xxx)
     successUrl: "",   // default: current page + ?billing=success
     cancelUrl: ""     // default: current page + ?billing=cancel
+  },
+
+  // RevenueCat — DYNAMIC paywall pricing. The "Go Pro" paywall calls getOfferings() and
+  // renders live plans/prices from RevenueCat instead of the hardcoded PLANS[].
+  // Setup: load the RevenueCat Web SDK (@revenuecat/purchases-js), configure it with the
+  // public API key, expose it as `window.Purchases`, then set enabled=true here.
+  //   import { Purchases } from "https://esm.sh/@revenuecat/purchases-js";
+  //   window.Purchases = Purchases; Purchases.configure(REVENUECAT_PUBLIC_KEY, appUserId);
+  // Continue → purchasePackage(selected). Disabled/unavailable → falls back to PLANS[].
+  revenuecat: {
+    enabled: false,
+    apiKey: "",        // RevenueCat public Web Billing API key (client-safe)
+    offeringId: ""     // "" → offerings.current
   }
 };

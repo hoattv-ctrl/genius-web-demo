@@ -292,7 +292,8 @@
 
   /* bottom dock (prompt bar fixed to viewport bottom, offset by sidebar) */
   .dock{position:fixed;left:var(--sbw);right:0;bottom:0;padding:14px 36px 22px;background:linear-gradient(to top,var(--bg) 60%,transparent);z-index:30}
-  .dock-inner{max-width:860px;margin:0 auto;background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:8px 10px;box-shadow:0 10px 36px rgba(0,0,0,.45)}
+  .dock-inner{max-width:860px;margin:0 auto;background:var(--card);border:1px solid var(--hairline);border-radius:18px;padding:8px 10px;box-shadow:0 10px 36px rgba(0,0,0,.45);transition:border-color .3s cubic-bezier(.22,1,.36,1),box-shadow .3s cubic-bezier(.22,1,.36,1)}
+  .dock-inner:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(124,58,237,.18),0 0 50px rgba(124,58,237,.35),0 10px 36px rgba(0,0,0,.45)}
   .dock-ctls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 4px 8px}
   .dock-row{display:flex;align-items:flex-end;gap:10px}
   .dock-row textarea{flex:1;background:none;border:none;color:var(--tx);font-family:inherit;font-size:15px;padding:9px 6px;outline:none;resize:none;min-height:24px;max-height:140px;line-height:1.45}
@@ -425,7 +426,7 @@
   .home-wrap{max-width:1180px;margin:0 auto}
   .home-hero{text-align:center;font-size:clamp(26px,3.4vw,40px);font-weight:800;letter-spacing:-1px;margin:30px 0 26px;color:var(--tx)}
   .home-hero .spark{color:var(--primary);font-size:.6em;vertical-align:super;margin-left:4px}
-  .cbox{max-width:920px;margin:0 auto 40px;background:var(--card);border:1px solid var(--tint-2);border-radius:22px;padding:18px 20px;box-shadow:0 0 0 4px rgba(124,58,237,.08),0 18px 50px rgba(0,0,0,.5)}
+  .cbox{max-width:920px;margin:0 auto 40px;background:var(--card);border:1px solid rgba(155,92,255,.18);border-radius:22px;padding:18px 20px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
   .cbox-input{width:100%;background:none;border:none;color:var(--tx);font-family:inherit;font-size:16px;outline:none;resize:none;min-height:28px;max-height:160px;line-height:1.5;margin-bottom:14px}
   .cbox-input::placeholder{color:#7a6f90}
   .cbox-ctls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -454,7 +455,7 @@
   .home-more .btn{border-radius:var(--pill);padding:11px 22px}
 
   /* ===== Liquid glass (frosted translucent) ===== */
-  .cbox{background:rgba(24,20,34,.55);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border-color:rgba(155,92,255,.45);box-shadow:0 0 0 4px rgba(124,58,237,.10),0 0 40px rgba(124,58,237,.18) inset,0 18px 50px rgba(0,0,0,.5)}
+  .cbox{background:rgba(24,20,34,.55);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border-color:rgba(155,92,255,.18);box-shadow:0 18px 50px rgba(0,0,0,.5)}
   .seg2,.ctl,.stepper,.model-pill{background:rgba(255,255,255,.06);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);border-color:rgba(255,255,255,.12)}
   .icon-btn,.av-top{backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%)}
   .icon-btn{background:rgba(255,255,255,.06)}
@@ -600,6 +601,18 @@ const BILLING = {
   prices:            (CFG.billing && CFG.billing.prices)            || {},   // planId -> provider price id
   successUrl:        (CFG.billing && CFG.billing.successUrl)        || (location.origin + location.pathname + "?billing=success"),
   cancelUrl:         (CFG.billing && CFG.billing.cancelUrl)         || (location.origin + location.pathname + "?billing=cancel"),
+};
+
+/* ---------- RevenueCat — DYNAMIC paywall pricing ----------
+   The Paywall ("Go Pro") fetches plans & prices live from RevenueCat via getOfferings()
+   instead of the hardcoded PLANS[]. To enable: load the RevenueCat Web SDK and expose it
+   as `window.Purchases` (configured with your public API key), then set
+   CONFIG.revenuecat.enabled = true (+ optional offeringId). When unavailable/unconfigured,
+   the paywall falls back to PLANS[] so it always renders. */
+const REVENUECAT = {
+  enabled:    !!(CFG.revenuecat && CFG.revenuecat.enabled),
+  apiKey:     (CFG.revenuecat && CFG.revenuecat.apiKey)     || "",
+  offeringId: (CFG.revenuecat && CFG.revenuecat.offeringId) || "",   // "" → offerings.current
 };
 
 /* ---------- Service catalog (mini apps) ----------
@@ -750,6 +763,7 @@ function finishLogin(name){
   toast("ok","Welcome, "+((name||"creator").split(" ")[0])+"!","You're signed in.");
   if(intent==="paywall"){ go("#/home"); setTimeout(openPaywall,60); }
   else if(intent==="home"){ go("#/home"); }
+  else if(intent==="t2i"){ go("#/app/t2i"); }
   else { render(); if(cb) cb(); }   // "back" → stay; run same-tab resume callback if any
 }
 
@@ -1087,7 +1101,7 @@ function viewWelcome(v){
       </div>
 
       <div class="wl-gallery">
-        ${WL_GALLERY.map((src,i)=>`<div class="wl-g wl-g${i+1}"><div class="wl-card"><img src="${src}" alt="" loading="lazy"/></div></div>`).join("")}
+        ${WL_GALLERY.map((src,i)=>`<div class="wl-g wl-g${i+1}" onclick="welcomeCardClick()"><div class="wl-card"><img src="${src}" alt="" loading="lazy"/></div></div>`).join("")}
       </div>
     </div>`;
 }
@@ -1104,6 +1118,8 @@ function startFree(){
   openAuth("paywall");                       // redirect sign-in resumes via gx_intent="paywall"
 }
 function tryGenius(){ S.onboarded=true; save(); go("#/app/t2i"); }
+/* Click any Welcome gallery card → Image Generator (sign in first if needed). */
+function welcomeCardClick(){ S.onboarded=true; save(); if(S.user){ go("#/app/t2i"); return; } openAuth("t2i"); }
 function afterOnboardLogin(){ go("#/home"); openPaywall(); }
 
 /* ---------- HOME (mockup: "What do you want to create today?" hero + prompt box + cards) ---------- */
@@ -1384,6 +1400,7 @@ function viewService(v, id){
           <span class="ctl-group" id="ctl-count">
             <span class="ctl on" onclick="pickCtl('count',1,this)">1</span>
             <span class="ctl" onclick="pickCtl('count',2,this)">2</span>
+            <span class="ctl" onclick="pickCtl('count',3,this)">3</span>
             <span class="ctl" onclick="pickCtl('count',4,this)">4</span>
           </span>` : ""}
         </div>
@@ -1688,16 +1705,51 @@ function cancelPro(){ S.plan="free"; logActivity("Genius Pro cancelled","Back to
    Feature comparison (Free vs Pro) + plan select + Continue → startCheckout.
    X / "Maybe later" closes it (no charge). Shown after onboarding login; reusable from "Go Pro". */
 let PAYWALL_PLAN = "monthly";
-function openPaywall(){
-  if($("#paywall")) return;                 // already open (dedup)
-  PAYWALL_PLAN = (PLANS.find(p=>p.featured)||PLANS[0]).id;
-  const planRow = p => `
-    <label class="pw-plan ${p.id===PAYWALL_PLAN?'sel':''}" onclick="pickPaywallPlan('${p.id}')">
+let PAYWALL_PLANS = PLANS.slice();   // plans currently shown (RevenueCat offerings, else PLANS[])
+
+/* Fetch plans+prices live from RevenueCat. Returns a normalized PLANS-shaped array, or
+   null when RevenueCat isn't configured/available (→ caller falls back to PLANS[]). */
+async function getOfferings(){
+  if(!REVENUECAT.enabled) return null;
+  try{
+    const P = window.Purchases;                      // RevenueCat Web SDK, exposed by the host page
+    if(!P) return null;
+    const rc = (typeof P.getSharedInstance==="function") ? P.getSharedInstance() : P;
+    const offerings = await rc.getOfferings();
+    const off = (REVENUECAT.offeringId && offerings.all && offerings.all[REVENUECAT.offeringId]) || offerings.current;
+    const pkgs = off && (off.availablePackages || off.packages);
+    if(!pkgs || !pkgs.length) return null;
+    const plans = pkgs.map(mapRcPackage).filter(Boolean);
+    if(!plans.length) return null;
+    // Mark a featured plan (offering metadata.most_popular, else weekly, else first).
+    const fav = (off.metadata && off.metadata.most_popular) || "";
+    let f = plans.find(p=>p.id===fav) || plans.find(p=>p.per==="week") || plans[0];
+    if(f){ f.featured=true; f.tag="Most Popular"; }
+    return plans;
+  }catch(e){ console.warn("[revenuecat] getOfferings failed:", e); return null; }
+}
+/* Map one RevenueCat package → our plan shape (defensive across SDK versions). */
+function mapRcPackage(pkg){
+  if(!pkg) return null;
+  const prod = pkg.webBillingProduct || pkg.rcBillingProduct || pkg.product || pkg.storeProduct || {};
+  const price = (prod.currentPrice && (prod.currentPrice.formattedPrice||prod.currentPrice.formatted)) || prod.priceString || prod.formattedPrice || prod.price || "";
+  const dur = String(prod.normalPeriodDuration || prod.subscriptionPeriod || pkg.packageType || "").toLowerCase();
+  const per = /week|p1w|weekly/.test(dur) ? "week" : /year|p1y|annual/.test(dur) ? "year" : "month";
+  const nm  = (prod.title || pkg.identifier || (per[0].toUpperCase()+per.slice(1)+"ly")).replace(/\s*\(.*\)\s*/,"").trim();
+  return { id: pkg.identifier || nm, nm, usd: price || "", per, rcPackage: pkg };
+}
+function pwPlanRow(p){
+  return `<label class="pw-plan ${p.id===PAYWALL_PLAN?'sel':''}" onclick="pickPaywallPlan('${esc(p.id)}')">
       ${p.tag?`<span class="pw-tag">${esc(p.tag)}</span>`:""}
       <span class="pw-radio"></span>
       <span class="pw-plan-nm">${esc(p.nm)}</span>
-      <span class="pw-plan-pr">${esc(p.usd)}</span>
+      <span class="pw-plan-pr">${esc(p.usd||"")}</span>
     </label>`;
+}
+function openPaywall(){
+  if($("#paywall")) return;                 // already open (dedup)
+  PAYWALL_PLANS = PLANS.slice();            // start with defaults; RevenueCat updates below
+  PAYWALL_PLAN = (PAYWALL_PLANS.find(p=>p.featured)||PAYWALL_PLANS[0]).id;
   const m = el(`<div class="scrim-modal" id="paywall">
     <div class="modal pw">
       <div class="mclose" onclick="closePaywall()"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
@@ -1711,19 +1763,44 @@ function openPaywall(){
         <div class="pw-stars">★★★★★</div>
         <div class="pw-rating-sub">1,000+ reviews</div>
       </div>
-      <div class="pw-plans">${PLANS.map(planRow).join("")}</div>
+      <div class="pw-plans" id="pw-plans">${PAYWALL_PLANS.map(pwPlanRow).join("")}</div>
       <button class="btn btn-primary btn-block pw-continue" onclick="paywallContinue()">Continue</button>
       <div class="pw-links"><span onclick="toast('info','Restore Purchases','Coming soon')">Restore Purchases</span><span onclick="toast('info','Terms','Coming soon')">Terms</span><span onclick="toast('info','Privacy','Coming soon')">Privacy</span></div>
     </div></div>`);
   document.body.appendChild(m);
+  // Dynamic pricing: pull live offerings from RevenueCat and re-render the plan rows.
+  getOfferings().then(plans=>{
+    if(!plans || !plans.length || !$("#paywall")) return;
+    PAYWALL_PLANS = plans;
+    PAYWALL_PLAN = (plans.find(p=>p.featured)||plans[0]).id;
+    const box=$("#pw-plans"); if(box) box.innerHTML = PAYWALL_PLANS.map(pwPlanRow).join("");
+  });
 }
 function pickPaywallPlan(id){
   PAYWALL_PLAN = id;
   document.querySelectorAll("#paywall .pw-plan").forEach(n=>n.classList.remove("sel"));
-  const ix = PLANS.findIndex(p=>p.id===id);
+  const ix = PAYWALL_PLANS.findIndex(p=>p.id===id);
   const node = document.querySelectorAll("#paywall .pw-plan")[ix]; if(node) node.classList.add("sel");
 }
-function paywallContinue(){ const id=PAYWALL_PLAN; closePaywall(); startCheckout(id); }
+function paywallContinue(){
+  const plan = PAYWALL_PLANS.find(p=>p.id===PAYWALL_PLAN) || PAYWALL_PLANS[0];
+  closePaywall();
+  // RevenueCat package selected → purchase via RC; else fall back to BE checkout / mock.
+  if(plan && plan.rcPackage && window.Purchases){ rcPurchase(plan); return; }
+  startCheckout(plan ? plan.id : PAYWALL_PLAN);
+}
+/* Purchase a RevenueCat package (Web SDK). On success, refresh entitlement → flip to Pro. */
+async function rcPurchase(plan){
+  if(!requireAuth(()=>rcPurchase(plan))) return;
+  try{
+    const P = window.Purchases; const rc = (typeof P.getSharedInstance==="function") ? P.getSharedInstance() : P;
+    toast("info","Opening checkout…", plan.nm);
+    const res = await rc.purchasePackage(plan.rcPackage);
+    const ent = res && (res.customerInfo || res).entitlements;
+    const active = ent && ent.active && Object.keys(ent.active).length>0;
+    if(active){ S.plan="pro"; logActivity(plan.nm+" subscription","Activated via RevenueCat","👑"); save(); render(); toast("ok","Welcome to Genius Pro 👑","Unlimited unlocked."); }
+  }catch(e){ if(e && e.userCancelled) return; toast("err","Purchase failed",(e&&e.message)||"Please try again."); }
+}
 function closePaywall(){ const m=$("#paywall"); if(m) m.remove(); }
 
 /* ---------- EARN (growth loop — rewards are free Pro time, NOT credits) ---------- */
